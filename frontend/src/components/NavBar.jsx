@@ -14,14 +14,34 @@ const NavBar = () => {
       <div className="flex items-center space-x-4">
         <Link
           to="/"
-          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 cursor-pointer"
+          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition cursor-pointer"
         >
           Home
         </Link>
-        <Link to="/about">About</Link>
-        <Link to="/users">Users</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        <Link
+          to="/about"
+          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition cursor-pointer"
+        >
+          About
+        </Link>
+        <Link
+          to="/users"
+          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition cursor-pointer"
+        >
+          Users
+        </Link>
+        <Link
+          to="/login"
+          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition cursor-pointer"
+        >
+          Login
+        </Link>
+        <Link
+          to="/register"
+          className="bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition cursor-pointer"
+        >
+          Register
+        </Link>
       </div>
     </div>
   );
