@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
+import Landing from "./pages/Landing";
 
 function App() {
   return (
@@ -13,9 +14,10 @@ function App() {
       {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
       <Routes>
+        <Route path="/" element={<Landing />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/home" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
       </Routes>
