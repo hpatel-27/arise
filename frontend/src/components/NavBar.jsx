@@ -16,15 +16,19 @@ const NavBar = () => {
         />
       </div>
       <div className="flex items-center space-x-4">
-        {["Home", "About", "Profile", "Login", "Register"].map((label) => (
-          <Link
-            key={label}
-            to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
-            className="px-3 py-2 rounded-lg bg-gray-600/50 text-gray-100 hover:bg-gray-700/70 transition-colors shadow-sm"
-          >
-            {label}
-          </Link>
-        ))}
+        {["Landing", "Home", "About", "Profile", "Login", "Register"].map(
+          (label) => (
+            <Link
+              key={label}
+              to={`/${
+                label.toLowerCase() === "landing" ? "" : label.toLowerCase()
+              }`}
+              className="px-3 py-2 rounded-lg bg-gray-600/50 text-gray-100 hover:bg-gray-700/70 transition-colors shadow-sm"
+            >
+              {label}
+            </Link>
+          )
+        )}
       </div>
     </div>
   );
