@@ -17,4 +17,4 @@ async function getUserById(id) {
   return user;
 }
 
-module.exports = { getAllUsers };
+module.exports = { getAllUsers, getUserById };
