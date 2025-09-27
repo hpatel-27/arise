@@ -15,6 +15,9 @@ app.use(passport.initialize());
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
 
+const userRoutes = require("./routes/user");
+app.use("/api", userRoutes);
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
