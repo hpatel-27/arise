@@ -1,4 +1,5 @@
 import achievementService from "../services/achievementService";
+import pickFields from "../utils/pickFields";
 
 async function getAllAchievements(req, res) {
   try {
@@ -26,4 +27,53 @@ async function createAchievement(req, res) {
   }
 }
 
-module.exports = { getAllAchievements, createAchievement };
+async function getAchievementById(req, res) {
+  console.log("Fetching achievement with ID:", req.params.id);
+  try {
+    const achievement = await achievementService.getAchievementById(
+      req.params.id
+    );
+    if (!achievement) {
+      return res.status(404).json({ error: "Achievement not found" });
+    }
+    res.json(achievement);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function updateAchievement(req, res) {
+  console.log("Updating achievement with ID:", req.params.id);
+  try {
+    const data = pickFields(req.body, [
+      "name",
+      "description",
+      "iconPath",
+      "category",
+    ]);
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({ error: "No valid fields to update" });
+    }
+
+    const achievement = await achievementService.updateAchievement(
+      req.params.id,
+      data
+    );
+
+    if (!achievement) {
+      return res.status(404).json({ error: "Achievement not found" });
+    }
+
+    res.json(achievement);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = {
+  getAllAchievements,
+  createAchievement,
+  getAchievementById,
+  updateAchievement,
+};

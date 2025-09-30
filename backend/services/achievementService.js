@@ -12,4 +12,24 @@ async function createAchievement(data) {
   return achievement;
 }
 
-module.exports = { getAllAchievements, createAchievement };
+async function getAchievementById(id) {
+  const achievement = await prisma.achievement.findUnique({
+    where: { id: parseInt(id, 10) },
+  });
+  return achievement;
+}
+
+async function updateAchievement(id, data) {
+  const achievement = await prisma.achievement.update({
+    where: { id: parseInt(id, 10) },
+    data,
+  });
+  return achievement;
+}
+
+module.exports = {
+  getAllAchievements,
+  createAchievement,
+  getAchievementById,
+  updateAchievement,
+};
