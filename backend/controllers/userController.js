@@ -46,4 +46,23 @@ async function deleteUser(req, res) {
   }
 }
 
-module.exports = { getAllUsers, getUserById, deleteUser };
+async function updateUser(req, res) {
+  try {
+    let { id } = req.params;
+    id = parseInt(id, 10);
+    const data = req.body;
+
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+    // return the updated user
+    const user = await userService.updateUser(id, data);
+    // if it did not update, it will have thrown an error
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { getAllUsers, getUserById, deleteUser, updateUser };
