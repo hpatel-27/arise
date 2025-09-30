@@ -71,9 +71,22 @@ async function updateAchievement(req, res) {
   }
 }
 
+async function deleteAchievement(req, res) {
+  console.log("Deleting achievement with ID:", req.params.id);
+  try {
+    const achievement = await achievementService.deleteAchievement(
+      req.params.id
+    );
+    res.json(achievement);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllAchievements,
   createAchievement,
   getAchievementById,
   updateAchievement,
+  deleteAchievement,
 };

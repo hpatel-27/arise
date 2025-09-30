@@ -10,5 +10,7 @@ router.get("/achievements/:id", achievementController.getAchievementById);
 router.patch("/achievements/:id", achievementController.updateAchievement);
 // Create a new achievement
 router.post("/achievements", achievementController.createAchievement);
+// Delete an achievement by ID
+router.delete("/achievements/:id", achievementController.deleteAchievement);
 
 module.exports = router;

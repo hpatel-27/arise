@@ -27,9 +27,19 @@ async function updateAchievement(id, data) {
   return achievement;
 }
 
+async function deleteAchievement(id) {
+  // may throw error if achievement with given id does not exist
+  const achievement = await prisma.achievement.delete({
+    where: { id: parseInt(id, 10) },
+  });
+  // return the deleted achievement
+  return achievement;
+}
+
 module.exports = {
   getAllAchievements,
   createAchievement,
   getAchievementById,
   updateAchievement,
+  deleteAchievement,
 };
