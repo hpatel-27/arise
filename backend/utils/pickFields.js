@@ -8,4 +8,4 @@ function pickFields(source, allowedFields) {
   return result;
 }
 
-export default pickFields;
+module.exports = pickFields;

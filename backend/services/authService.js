@@ -1,4 +1,4 @@
-import prisma from "../db";
+const prisma = require("../db");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/jwt");
 

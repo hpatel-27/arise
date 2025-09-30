@@ -1,4 +1,4 @@
-import prisma from "../db";
+const prisma = require("../db");
 
 async function getAllAchievements() {
   const achievements = await prisma.achievement.findMany({

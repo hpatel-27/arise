@@ -1,5 +1,5 @@
-import achievementService from "../services/achievementService";
-import pickFields from "../utils/pickFields";
+const achievementService = require("../services/achievementService");
+const pickFields = require("../utils/pickFields");
 
 async function getAllAchievements(req, res) {
   try {
