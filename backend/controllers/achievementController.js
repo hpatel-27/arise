@@ -30,9 +30,9 @@ async function createAchievement(req, res) {
 async function getAchievementById(req, res) {
   console.log("Fetching achievement with ID:", req.params.id);
   try {
-    const achievement = await achievementService.getAchievementById(
-      req.params.id
-    );
+    let { id } = req.params;
+    id = parseInt(id, 10);
+    const achievement = await achievementService.getAchievementById(id);
     if (!achievement) {
       return res.status(404).json({ error: "Achievement not found" });
     }
@@ -56,10 +56,9 @@ async function updateAchievement(req, res) {
       return res.status(400).json({ error: "No valid fields to update" });
     }
 
-    const achievement = await achievementService.updateAchievement(
-      req.params.id,
-      data
-    );
+    let { id } = req.params;
+    id = parseInt(id, 10);
+    const achievement = await achievementService.updateAchievement(id, data);
 
     if (!achievement) {
       return res.status(404).json({ error: "Achievement not found" });
@@ -74,9 +73,9 @@ async function updateAchievement(req, res) {
 async function deleteAchievement(req, res) {
   console.log("Deleting achievement with ID:", req.params.id);
   try {
-    const achievement = await achievementService.deleteAchievement(
-      req.params.id
-    );
+    let { id } = req.params;
+    id = parseInt(id, 10);
+    const achievement = await achievementService.deleteAchievement(id);
     res.json(achievement);
   } catch (error) {
     res.status(500).json({ error: error.message });
