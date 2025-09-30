@@ -22,7 +22,7 @@ model User {
   lastName   String?  // null until updated in profile
   createdAt  DateTime @default(now())
 
-  achievements UserAchievements[]
+  achievements UserAchievement[]
 
   @@map("users")
 }
@@ -34,12 +34,12 @@ model Achievement {
   iconPath    String?
   category    String?
 
-  users UserAchievements[]
+  users UserAchievement[]
 
   @@map("achievements")
 }
 
-model UserAchievements {
+model UserAchievement {
   id            Int       @id @default(autoincrement())
   userId        Int
   achievementId Int
