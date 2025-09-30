@@ -11,12 +11,17 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 
+const API_PREFIX = "/api/v1";
+
 // routes
 const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
+app.use(`${API_PREFIX}/auth`, authRoutes);
 
 const userRoutes = require("./routes/user");
-app.use("/api", userRoutes);
+app.use(`${API_PREFIX}`, userRoutes);
+
+const achievementRoutes = require("./routes/achievements");
+app.use(`${API_PREFIX}`, achievementRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
