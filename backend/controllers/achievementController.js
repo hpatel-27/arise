@@ -1,4 +1,4 @@
-const achievementService = require("../services/achievementService");
+import achievementService from "../services/achievementService";
 
 async function getAllAchievements(req, res) {
   try {
