@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const pickFields = require("../utils/pickFields");
 
 async function getAllUsers(req, res) {
   try {
@@ -50,11 +51,17 @@ async function updateUser(req, res) {
   try {
     let { id } = req.params;
     id = parseInt(id, 10);
-    const data = req.body;
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid user ID" });
     }
+    const data = pickFields(req.body, [
+      "firstName",
+      "lastName",
+      "age",
+      "gender",
+    ]);
+
     // return the updated user
     const user = await userService.updateUser(id, data);
     // if it did not update, it will have thrown an error
