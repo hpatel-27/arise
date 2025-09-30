@@ -17,4 +17,17 @@ async function getUserById(id) {
   return user;
 }
 
-module.exports = { getAllUsers, getUserById };
+async function deleteUser(id) {
+  const user = await prisma.user.delete({
+    where: { id },
+    select: { id: true, email: true },
+  });
+
+  if (!user) throw new Error("User not found");
+  // return the user that was deleted
+  return user;
+}
+
+async function updateUser(id, data) {}
+
+module.exports = { getAllUsers, getUserById, deleteUser, updateUser };
