@@ -10,16 +10,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Login attempted");
-    console.log(email);
-    console.log(password);
     try {
       const userId = await login(email, password);
       console.log(userId);
       // Login successful, redirect to home
-      navigate("/");
-      
+      navigate("/home");
     } catch (error) {
       console.error("Login failed", error);
     }
