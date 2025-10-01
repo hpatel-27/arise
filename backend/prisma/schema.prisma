@@ -21,7 +21,7 @@ model User {
   firstName  String?   // null until updated in profile
   lastName   String?   // null until updated in profile
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime? 
+  updatedAt  DateTime?  @updatedAt 
 
   achievements UserAchievement[]
 
