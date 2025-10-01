@@ -1,20 +1,32 @@
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
 const Login = () => {
-  const attemptLogin = (e) => {
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log("Login attempted");
+    console.log(email);
+    console.log(password);
+    try {
+      const userId = await login(email, password);
+      console.log(userId);
+      // Login successful, redirect to home
+      navigate("/");
+      
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-900">
-        <body class="h-full">
-        ```
-      */}
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -28,7 +40,7 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" onSubmit={attemptLogin} className="space-y-6">
+          <form action="#" onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -43,6 +55,7 @@ const Login = () => {
                   type="email"
                   required
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
                 />
               </div>
@@ -72,6 +85,7 @@ const Login = () => {
                   type="password"
                   required
                   autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
                 />
               </div>
