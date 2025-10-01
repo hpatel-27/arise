@@ -2,7 +2,7 @@ const prisma = require("../db");
 
 async function getAllAchievements() {
   const achievements = await prisma.achievement.findMany({
-    select: { id: true },
+    orderBy: { id: "asc" },
   });
   return achievements;
 }
