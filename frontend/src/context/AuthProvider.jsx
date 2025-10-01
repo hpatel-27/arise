@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { login as loginService } from "../services/authService";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,10 +16,12 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const data = await loginService(email, password); // calls backend
-      console.log("Login successful:", data);
-      setUser(data.userId);
+      const decoded = jwtDecode(data.token);
+      console.log("Login successful:", decoded);
+
+      setUser(decoded.userId);
       localStorage.setItem("auth", JSON.stringify(data));
-      return data.userId;
+      return decoded.userId;
     } catch (error) {
       console.error("Login error:", error);
       throw new Error("Invalid email or password"); // let component handle errors
