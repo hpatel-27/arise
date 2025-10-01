@@ -11,7 +11,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 
-const API_PREFIX = "/api/v1";
+const API_PREFIX = process.env.API_PREFIX;
 
 // routes
 const authRoutes = require("./routes/auth");
