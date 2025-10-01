@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  password   String?  // null for OAuth users
-  googleId   String?  @unique
-  firstName  String?  // null until updated in profile
-  lastName   String?  // null until updated in profile
-  createdAt  DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String?   // null for OAuth users
+  googleId   String?   @unique
+  firstName  String?   // null until updated in profile
+  lastName   String?   // null until updated in profile
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? 
 
   achievements UserAchievement[]
 
