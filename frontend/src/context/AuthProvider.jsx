@@ -17,8 +17,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await loginService(email, password); // calls backend
       const decoded = jwtDecode(data.token);
-      console.log("Login successful:", decoded);
-
       setUser(decoded.userId);
       localStorage.setItem("auth", JSON.stringify(data));
       return decoded.userId;
