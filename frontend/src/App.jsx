@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NavBar from "./components/NavBar";
@@ -9,19 +12,33 @@ import Landing from "./pages/Landing";
 
 function App() {
   return (
-    <div>
-      <NavBar />
-      {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-      <Routes>
-        <Route path="/" element={<Landing />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/home" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-      </Routes>
-    </div>
+    <>
+      <AuthProvider>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Landing />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoutes>
+                <Profile />
+              </ProtectedRoutes>
+            }
+          ></Route>
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoutes>
+                <Home />
+              </ProtectedRoutes>
+            }
+          ></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+        </Routes>
+      </AuthProvider>
+    </>
   );
 }
 
