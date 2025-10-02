@@ -4,7 +4,7 @@ const { generateToken } = require("../utils/jwt");
 
 async function register(email, password) {
   const existingUser = await prisma.user.findUnique({ where: { email } });
-  if (existingUser) throw new Error("User already exists");
+  if (existingUser) throw new Error("Email already in use");
 
   const hashedPassword = await bcrypt.hash(password, 10);
   return prisma.user.create({
