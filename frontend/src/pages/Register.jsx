@@ -1,20 +1,55 @@
-const Register = () => {
-  const attemptRegister = (e) => {
-    e.preventDefault();
+import { useState } from "react";
+import { register } from "../services/authService";
+import { ToastContainer } from "react-toastify";
+import { notify } from "../utils/notify";
+import { useNavigate } from "react-router-dom";
 
+const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  const validateForm = () => {
+    const errors = [];
+    if (password !== confirmPassword) errors.push("Passwords do not match");
+    if (password.length < 8)
+      errors.push("Password must be at least 8 characters long");
+    if (!email.includes("@")) errors.push("Invalid email format");
+    return errors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log("Register attempted");
+    setIsSubmitting(true);
+    const errors = validateForm();
+    if (errors.length > 0) {
+      errors.forEach((err) => console.error(err));
+      setIsSubmitting(false);
+      notify(errors.join(". "));
+      return;
+    }
+
+    try {
+      // Register this user with their user
+      const data = await register(email, password);
+      console.log("Registration data", data);
+      notify("Registration successful! Please log in.");
+      // Redirect to login page
+      navigate("/login");
+    } catch (error) {
+      // Update error to a pop up with Toast or sweetalert2?
+      console.error("Registration failed:", error.message);
+      notify(`Registration failed: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-900">
-        <body class="h-full">
-        ```
-      */}
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -28,7 +63,7 @@ const Register = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" onSubmit={attemptRegister} className="space-y-6">
+          <form action="#" onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -43,6 +78,7 @@ const Register = () => {
                   type="email"
                   required
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
                 />
               </div>
@@ -64,6 +100,7 @@ const Register = () => {
                   type="password"
                   required
                   autoComplete="new-password"
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
                 />
               </div>
@@ -85,6 +122,7 @@ const Register = () => {
                   type="password"
                   required
                   autoComplete="new-password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
                 />
               </div>
@@ -93,9 +131,10 @@ const Register = () => {
             <div>
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 cursor-pointer shadow-sm transition ease-in-out"
               >
-                Create account
+                {isSubmitting ? "Creating Account..." : "Create Account"}
               </button>
             </div>
           </form>
@@ -111,6 +150,7 @@ const Register = () => {
           </p>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
