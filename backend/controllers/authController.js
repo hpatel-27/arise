@@ -18,7 +18,12 @@ async function login(req, res) {
     const token = await authService.login(email, password);
     return res.json({ token });
   } catch (error) {
-    return res.status(401).json({ error: error.message });
+    if (error.message.includes("not registered")) {
+      return res.status(404).json({ error: error.message });
+    } else if (error.message.includes("Invalid password")) {
+      return res.status(400).json({ error: error.message });
+    }
+    return res.status(500).json({ error: error.message });
   }
 }
 

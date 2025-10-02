@@ -14,10 +14,10 @@ async function register(email, password) {
 
 async function login(email, password) {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) throw new Error("Invalid email or password");
+  if (!user) throw new Error("This email is not registered. Please sign up.");
 
   const isMatch = bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Invalid email or password");
+  if (!isMatch) throw new Error("Invalid password. Please try again.");
 
   return generateToken(user.id);
 }
