@@ -13,7 +13,12 @@ export const login = async (email, password) => {
   if (response.ok) {
     return await response.json();
   } else {
-    throw new Error("Login failed", response.statusText);
+    if (response.status === 400) {
+      throw new Error("Invalid login details. Please try again.");
+    } else if (response.status === 404) {
+      throw new Error("This email is not registered. Please sign up.");
+    }
+    throw new Error("Server error. Please try again later.");
   }
 };
 

@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("auth", JSON.stringify(data));
       return decoded.userId;
     } catch (error) {
-      console.error("Login error:", error);
-      throw new Error("Invalid email or password"); // let component handle errors
+      console.error("Login error:", error.message);
+      throw new Error(error.message); // let component handle errors
     }
   };
 

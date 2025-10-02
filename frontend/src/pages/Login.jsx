@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import { defaultNotification } from "../utils/notify";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -11,12 +13,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userId = await login(email, password);
-      console.log(userId);
+      await login(email, password);
       // Login successful, redirect to home
       navigate("/home");
     } catch (error) {
-      console.error("Login failed", error);
+      // console.error("Login failed", error);
+      defaultNotification(`Login failed: ${error.message}`, "error");
     }
   };
 
@@ -107,6 +109,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

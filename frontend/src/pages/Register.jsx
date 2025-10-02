@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { register } from "../services/authService";
 import { ToastContainer } from "react-toastify";
-import { notify } from "../utils/notify";
+import { defaultNotification } from "../utils/notify";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -13,36 +13,31 @@ const Register = () => {
 
   const validateForm = () => {
     const errors = [];
-    if (password !== confirmPassword) errors.push("Passwords do not match");
+    if (password !== confirmPassword) errors.push("Passwords do not match!");
     if (password.length < 8)
-      errors.push("Password must be at least 8 characters long");
-    if (!email.includes("@")) errors.push("Invalid email format");
+      errors.push("Password must be at least 8 characters long!");
+    if (!email.includes("@")) errors.push("Invalid email format!");
     return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register attempted");
     setIsSubmitting(true);
     const errors = validateForm();
     if (errors.length > 0) {
       errors.forEach((err) => console.error(err));
       setIsSubmitting(false);
-      notify(errors.join(". "));
+      defaultNotification(errors.join(" "), "error");
       return;
     }
 
     try {
       // Register this user with their user
-      const data = await register(email, password);
-      console.log("Registration data", data);
-      notify("Registration successful! Please log in.");
+      await register(email, password);
       // Redirect to login page
       navigate("/login");
     } catch (error) {
-      // Update error to a pop up with Toast or sweetalert2?
-      console.error("Registration failed:", error.message);
-      notify(`Registration failed: ${error.message}`);
+      defaultNotification(`Registration failed: ${error.message}`, "error");
     } finally {
       setIsSubmitting(false);
     }
