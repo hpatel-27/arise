@@ -24,6 +24,7 @@ model User {
   updatedAt  DateTime?  @updatedAt 
 
   achievements UserAchievement[]
+  userStats    UserStat[]
 
   @@map("users")
 }
@@ -52,4 +53,40 @@ model UserAchievement {
 
   @@map("user_achievements")
   @@unique([userId, achievementId]) // prevent duplicates
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique // Strength, Agility, Intelligence, Vitality, Perception
+  description   String?
+
+  tasks         Task[]
+  userStats     UserStat[]
+
+  @@map("categories)
+}
+
+model Task {
+  id            Int       @id @default(autoincrement())
+  categoryId    Int
+  name          String
+  requirement   String    @unique
+  xpValue       Int       @default(50)
+
+  category      Category  @relation(fields: [categoryId], references:[id])
+
+  @@map("tasks")
+}
+
+model UserStat {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  categoryId    Int
+  currentXP     Int       @default(0)
+  statLevel     Int       @default(10)
+
+  category      Category  @relation(fields: [categoryId], references:[id])
+  user          User      @relation(fields: [userId], references:[id])
+
+  @@map("user_stats")
 }
