@@ -25,6 +25,7 @@ model User {
 
   achievements UserAchievement[]
   userStats    UserStat[]
+  userTaskLogs UserTaskLog[]
 
   @@map("users")
 }
@@ -48,7 +49,7 @@ model UserAchievement {
   dateUnlocked  DateTime?
   status        Boolean   @default(false)
 
-  user          User      @relation(fields: [userId], references:[id])
+  user          User      @relation(fields: [userId], references: [id])
   achievement   Achievement @ relation(fields: [achievementId], references: [id])
 
   @@map("user_achievements")
@@ -73,7 +74,9 @@ model Task {
   requirement   String    @unique
   xpValue       Int       @default(50)
 
-  category      Category  @relation(fields: [categoryId], references:[id])
+  userTaskLogs  UserTaskLog[]
+
+  category      Category  @relation(fields: [categoryId], references: [id])
 
   @@map("tasks")
 }
@@ -85,8 +88,18 @@ model UserStat {
   currentXP     Int       @default(0)
   statLevel     Int       @default(10)
 
-  category      Category  @relation(fields: [categoryId], references:[id])
-  user          User      @relation(fields: [userId], references:[id])
+  category      Category  @relation(fields: [categoryId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
 
   @@map("user_stats")
+}
+
+model UserTaskLog {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  taskId        Int
+  completedAt   DateTime  @default(now())
+
+  user          User      @relation(fields: [userId], references: [id])
+  task          Task      @relation(fields: [taskId], references: [id])
 }
