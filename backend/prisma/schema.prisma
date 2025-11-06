@@ -70,8 +70,8 @@ model Category {
 model Task {
   id            Int       @id @default(autoincrement())
   categoryId    Int
-  name          String
-  requirement   String    @unique
+  name          String    @unique
+  requirement   String    
   xpValue       Int       @default(50)
 
   userTaskLogs  UserTaskLog[]
