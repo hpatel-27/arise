@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - api
+    volumes:
+      - ./proxy/default.conf.template:/etc/nginx/templates/default.conf.template
+    ports:
+      - "80:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api
+    restart: unless-stopped
+    depends_on:
+      - database
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080" # optional for local debugging
+
+  database:
+    image: postgres:15
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./database/data:/var/lib/postgresql/data"
