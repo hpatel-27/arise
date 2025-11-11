@@ -1,4 +1,4 @@
-import { verifyToken } from "../utils/jwt";
+const jwtUtil = require("../utils/jwt");
 
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -6,7 +6,7 @@ function authenticate(req, res, next) {
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = verifyToken(token);
+    const decoded = jwtUtil.verifyToken(token);
     req.user = decoded;
     next();
   } catch (error) {

@@ -1,4 +1,4 @@
-require("dotenv").config({ debug: true });
+require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 
@@ -30,6 +30,9 @@ app.use(`${API_PREFIX}`, categoryRoutes);
 // Task routes
 const taskRoutes = require("./routes/tasks");
 app.use(`${API_PREFIX}`, taskRoutes);
+
+const statRoutes = require("./routes/stats");
+app.use(`${API_PREFIX}`, statRoutes);
 
 // Start the server on given port
 const port = process.env.PORT || 8080;
