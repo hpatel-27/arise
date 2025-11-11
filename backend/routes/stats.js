@@ -8,4 +8,10 @@ router.post("/stats/init", statController.initializeStats);
 // Get stats of a user
 router.get("/stats/:userId", statController.getStats);
 
+// Get a stat for a user
+router.get("/stats/:userId/:categoryId", statController.getStatByCategory);
+
+// Update a stat using earned xp
+router.patch("/stats/:userId", statController.updateStat);
+
 module.exports = router;

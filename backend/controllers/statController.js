@@ -29,7 +29,38 @@ async function getStats(req, res) {
   }
 }
 
+async function getStatByCategory(req, res) {
+  try {
+    let { userId, categoryId } = req.params;
+    const stat = await statService.getStatByCategory(userId, categoryId);
+    res.json(stat);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function updateStat(req, res) {
+  try {
+    let { userId } = req.params;
+    userId = parseInt(userId, 10);
+
+    const categoryId = req.body.categoryId;
+    const xpEarned = req.body.xpEarned;
+
+    const updatedStat = await statService.updateStats(
+      userId,
+      categoryId,
+      xpEarned
+    );
+    res.status(204).json(updatedStat);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   initializeStats,
   getStats,
+  getStatByCategory,
+  updateStat,
 };
