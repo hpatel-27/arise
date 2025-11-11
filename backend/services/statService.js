@@ -66,7 +66,7 @@ async function updateStats(userId, categoryId, xpEarned) {
   currentXP += xpEarned;
 
   // calculate level ups
-  let levelsGained = Math.floor(currentXp / XP_PER_LEVEL);
+  let levelsGained = Math.floor(currentXP / XP_PER_LEVEL);
   currentLevel += levelsGained;
 
   // Remainder xp after leveling up
