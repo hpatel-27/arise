@@ -32,6 +32,9 @@ async function getStats(req, res) {
 async function getStatByCategory(req, res) {
   try {
     let { userId, categoryId } = req.params;
+    userId = parseInt(userId, 10);
+    categoryId = parseInt(categoryId, 10);
+
     const stat = await statService.getStatByCategory(userId, categoryId);
     res.json(stat);
   } catch (error) {
