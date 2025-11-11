@@ -50,7 +50,9 @@ async function getStats(userId) {
 }
 
 async function getStatByCategory(userId, categoryId) {
-  const stat = await prisma.userStat({ where: { userId, categoryId } });
+  const stat = await prisma.userStat.findFirst({
+    where: { userId, categoryId },
+  });
   return stat;
 }
 
