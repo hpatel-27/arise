@@ -13,13 +13,11 @@ async function initializeStats(req, res) {
 
 async function getStats(req, res) {
   try {
-    let { userId } = req.params;
-    userId = parseInt(userId, 10);
+    const userId = req.user.id;
 
     // Get the user's stats and return them
     const statInfo = await statService.getStats(userId);
     const userStats = {
-      userId: userId,
       stats: statInfo,
     };
 
@@ -31,8 +29,9 @@ async function getStats(req, res) {
 
 async function getStatByCategory(req, res) {
   try {
-    let { userId, categoryId } = req.params;
-    userId = parseInt(userId, 10);
+    const userId = req.user.id;
+
+    let { categoryId } = req.params;
     categoryId = parseInt(categoryId, 10);
 
     const stat = await statService.getStatByCategory(userId, categoryId);
@@ -44,8 +43,7 @@ async function getStatByCategory(req, res) {
 
 async function updateStat(req, res) {
   try {
-    let { userId } = req.params;
-    userId = parseInt(userId, 10);
+    const userId = req.user.id;
 
     const categoryId = req.body.categoryId;
     const xpEarned = req.body.xpEarned;

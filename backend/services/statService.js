@@ -34,18 +34,16 @@ async function initializeStats(userId) {
 
 async function getStats(userId) {
   // Theres only going to be 5 items, due to there being 5 categories
-  const stats = [];
   const existingStats = await prisma.userStat.findMany({
     where: { userId },
+    orderBy: { id: "asc" },
   });
 
-  existingStats.map((stat) =>
-    stats.push({
-      category: translateCategory(stat.categoryId),
-      currentXP: stat.currentXP,
-      statLevel: stat.statLevel,
-    })
-  );
+  const stats = existingStats.map((stat) => ({
+    category: translateCategory(stat.categoryId),
+    currentXP: stat.currentXP,
+    statLevel: stat.statLevel,
+  }));
   return stats;
 }
 
