@@ -12,13 +12,9 @@ async function getAllUsers(req, res) {
 
 async function getUserById(req, res) {
   try {
-    let { id } = req.params;
-    id = parseInt(id);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user ID" });
-    }
+    const userId = req.user.userId;
 
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserById(userId);
     res.json(user);
   } catch (error) {
     if (error.message === "User not found") {
@@ -31,13 +27,9 @@ async function getUserById(req, res) {
 
 async function deleteUser(req, res) {
   try {
-    let { id } = req.params;
-    id = parseInt(id);
+    const userId = req.user.userId;
 
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user ID" });
-    }
-    const user = await userService.deleteUser(id);
+    const user = await userService.deleteUser(userId);
     res.json(user);
   } catch (error) {
     if (error.message === "User not found") {
@@ -49,12 +41,8 @@ async function deleteUser(req, res) {
 
 async function updateUser(req, res) {
   try {
-    let { id } = req.params;
-    id = parseInt(id, 10);
+    const userId = req.user.userId;
 
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user ID" });
-    }
     const data = pickFields(req.body, [
       "firstName",
       "lastName",
@@ -63,7 +51,7 @@ async function updateUser(req, res) {
     ]);
 
     // return the updated user
-    const user = await userService.updateUser(id, data);
+    const user = await userService.updateUser(userId, data);
     // if it did not update, it will have thrown an error
 
     res.json(user);
