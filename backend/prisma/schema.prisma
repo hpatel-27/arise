@@ -105,6 +105,6 @@ model UserLog {
   user          User      @relation(fields: [userId], references: [id])
   task          Task      @relation(fields: [taskId], references: [id])
 
-  @@map("user_task_logs")
+  @@map("user_logs")
   @@index([userId, type])
 }
