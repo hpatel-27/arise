@@ -37,7 +37,9 @@ model Achievement {
   description String
   iconPath    String?
   category    String?
-
+  metric      String? // e.g. "login", "task_completed"
+  targetValue Int?    // e.g. 7 for "7-day-streak"
+  
   users UserAchievement[]
 
   @@map("achievements")
