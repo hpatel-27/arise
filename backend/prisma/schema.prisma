@@ -25,7 +25,7 @@ model User {
 
   achievements UserAchievement[]
   userStats    UserStat[]
-  userTaskLogs UserTaskLog[]
+  userLogs     UserLog[]
 
   @@map("users")
 }
@@ -75,8 +75,6 @@ model Task {
   requirement   String    
   xpValue       Int       @default(50)
 
-  userTaskLogs  UserTaskLog[]
-
   category      Category  @relation(fields: [categoryId], references: [id])
 
   @@map("tasks")
@@ -103,7 +101,6 @@ model UserLog {
   metadata      Json?     // optional, { taskId: 42, duration: 30 }
 
   user          User      @relation(fields: [userId], references: [id])
-  task          Task      @relation(fields: [taskId], references: [id])
 
   @@map("user_logs")
   @@index([userId, type])
