@@ -36,10 +36,49 @@ async function deleteAchievement(id) {
   return achievement;
 }
 
+// internal function for updating user progress, typically on logging a significant action
+async function updateAchievementsForAction(userId, actionType) {
+  // Get all achievements tied to this type
+  const relatedAchievements = await prisma.achievement.findMany({
+    where: { metric: actionType },
+  });
+
+  for (const achievement of relatedAchievements) {
+    const userAchievement = await prisma.userAchievement.upsert({
+      where: {
+        userId_achievementId: { userId, achievementId: achievement.id },
+      },
+      update: {},
+      create: { userId, achievementId: achievement.id },
+    });
+
+    if (!userAchievement.status) {
+      const newProgress = userAchievement.progress + 1;
+
+      if (achievement.targetValue && newProgress >= achievement.targetValue) {
+        await prisma.userAchievement.update({
+          where: { id: userAchievement.id },
+          data: {
+            progress: achievement.targetValue,
+            status: true,
+            dateUnlocked: new Date(),
+          },
+        });
+      } else {
+        await prisma.userAchievement.update({
+          where: { id: userAchievement.id },
+          data: { progress: newProgress },
+        });
+      }
+    }
+  }
+}
+
 module.exports = {
   getAllAchievements,
   createAchievement,
   getAchievementById,
   updateAchievement,
   deleteAchievement,
+  updateAchievementsForAction,
 };
