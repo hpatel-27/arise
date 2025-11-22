@@ -26,6 +26,7 @@ model User {
 
   achievements UserAchievement[]
   userStats    UserStat[]
+  userTasks    UserTask[]
   userLogs     UserLog[]
 
   @@map("users")
@@ -80,6 +81,7 @@ model Task {
 
   category      Category  @relation(fields: [categoryId], references: [id])
 
+  userTasks     UserTask[]
   @@map("tasks")
 }
 
