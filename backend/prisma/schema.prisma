@@ -97,7 +97,7 @@ model UserTask {
   user          User      @relation(fields: [userId], references: [id])
   task          Task      @relation(fields: [taskId], references: [id])
 
-  @@unique([userId, taskId])
+  @@unique([userId, taskId], name: "userId_taskId")
 
   @@map("user_tasks")
 }
