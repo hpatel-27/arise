@@ -83,6 +83,23 @@ model Task {
   @@map("tasks")
 }
 
+model UserTask {
+  id            Int       @id @default(autoincrement())
+  taskId        Int       
+  userId        Int       
+  isComplete    Boolean   @default(false)
+  completedAt   DateTime? 
+  updatedAt     DateTime  @updatedAt
+  progress      Int       @default(0)
+  
+  user          User      @relation(fields: [userId], references: [id])
+  task          Task      @relation(fields: [taskId], references: [id])
+
+  @@unique([userId, taskId])
+
+  @@map("user_tasks")
+}
+
 model UserStat {
   id            Int       @id @default(autoincrement())
   userId        Int
