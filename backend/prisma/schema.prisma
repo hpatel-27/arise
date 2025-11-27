@@ -92,8 +92,8 @@ model UserTask {
   userId        Int       
   updatedAt     DateTime  @updatedAt
   progress      Int       @default(0)
-  isActive      Boolean   @default(false)
-  
+  isActive      Boolean   @default(true)
+
   user          User      @relation(fields: [userId], references: [id])
   task          Task      @relation(fields: [taskId], references: [id])
 
