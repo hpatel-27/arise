@@ -78,6 +78,7 @@ model Task {
   name          String    @unique
   requirement   String    
   xpValue       Int       @default(50)
+  targetValue Int?    // e.g. 3 for 3 leetcode problems"
 
   category      Category  @relation(fields: [categoryId], references: [id])
 
@@ -89,17 +90,30 @@ model UserTask {
   id            Int       @id @default(autoincrement())
   taskId        Int       
   userId        Int       
-  isComplete    Boolean   @default(false)
-  completedAt   DateTime? 
   updatedAt     DateTime  @updatedAt
   progress      Int       @default(0)
+  isActive      Boolean   @default(false)
   
   user          User      @relation(fields: [userId], references: [id])
   task          Task      @relation(fields: [taskId], references: [id])
 
+  userTaskCompletions     UserTaskCompletion[]
+
   @@unique([userId, taskId], name: "userId_taskId")
 
   @@map("user_tasks")
+}
+
+model UserTaskCompletion {
+  id            Int       @id @default(autoincrement())
+  userTaskId    Int       
+  completedAt   DateTime?
+  xpEarned      Int
+  metadata      Json?
+
+  userTask      UserTask      @relation(fields: [userTaskId], references: [id])
+
+  @@map("user_task_completions")
 }
 
 model UserStat {
