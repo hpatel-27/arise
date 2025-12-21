@@ -100,7 +100,7 @@ model UserTask {
   userTaskCompletions     UserTaskCompletion[]
 
   @@unique([userId, taskId], name: "userId_taskId")
-
+  @@index([userId, isActive])
   @@map("user_tasks")
 }
 
@@ -113,6 +113,7 @@ model UserTaskCompletion {
 
   userTask      UserTask      @relation(fields: [userTaskId], references: [id])
 
+  @@index([userTaskId, completedAt])
   @@map("user_task_completions")
 }
 
