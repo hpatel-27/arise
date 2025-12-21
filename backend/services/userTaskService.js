@@ -26,7 +26,7 @@ async function completeTask(userId, taskId) {
 
   const result = await prisma.$transaction(async (tx) => {
     // Make task data available for access later
-    const taskData = await prisma.task.findUnique({
+    const taskData = await tx.task.findUnique({
       where: { id: taskId },
     });
 
