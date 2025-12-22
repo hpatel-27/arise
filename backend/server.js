@@ -16,7 +16,7 @@ const authRoutes = require("./routes/auth");
 app.use(`${API_PREFIX}/auth`, authRoutes);
 
 // User routes
-const userRoutes = require("./routes/user");
+const userRoutes = require("./routes/users");
 app.use(`${API_PREFIX}`, userRoutes);
 
 // Achievement routes
@@ -31,8 +31,13 @@ app.use(`${API_PREFIX}`, categoryRoutes);
 const taskRoutes = require("./routes/tasks");
 app.use(`${API_PREFIX}`, taskRoutes);
 
+// Stat routes
 const statRoutes = require("./routes/stats");
 app.use(`${API_PREFIX}`, statRoutes);
+
+// User Task routes
+const userTaskRoutes = require("./routes/userTasks");
+app.use(`${API_PREFIX}`, userTaskRoutes);
 
 // Start the server on given port
 const port = process.env.PORT || 8080;
