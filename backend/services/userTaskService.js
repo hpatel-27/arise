@@ -21,7 +21,7 @@ async function completeTask(userId, taskId) {
   });
 
   if (!userTask) {
-    throw new Error("Task sent for completion does not exist.");
+    throw new Error("Task sent for completion is not available.");
   }
 
   const result = await prisma.$transaction(async (tx) => {
