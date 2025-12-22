@@ -3,6 +3,20 @@ const router = express.Router();
 const userTaskController = require("../controllers/userTaskController");
 const { authenticate } = require("../middleware/authMiddleware");
 
+// Get all active tasks for a user
+router.get(
+  "/userTasks",
+  authenticate,
+  userTaskController.getAllActiveTasksForUser
+);
+
+// Get a task for a user
+router.get(
+  "/userTasks/:taskId",
+  authenticate,
+  userTaskController.getTaskForUser
+);
+
 // Assign a Task to the User
 router.post(
   "/userTasks/:taskId/assign",
