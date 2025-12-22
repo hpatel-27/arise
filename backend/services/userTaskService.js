@@ -2,6 +2,45 @@ const prisma = require("../db");
 const logService = require("./logService");
 const statService = require("./statService");
 
+// Get all tasks for a user
+async function getAllActiveTasksForUser(userId) {
+  const tasks = await prisma.userTask.findMany({
+    where: { userId, isActive: true },
+  });
+  // If the tasks are not found, throw an error
+  if (!tasks) {
+    throw new Error("No active tasks found for user.");
+  }
+
+  // If the tasks are found, get the task data
+  const tasksWithData = await Promise.all(
+    tasks.map(async (task) => {
+      const taskData = await prisma.task.findUnique({
+        where: { id: task.taskId },
+      });
+      return { ...task, taskData };
+    })
+  );
+
+  return tasksWithData;
+}
+
+// Get a task for a user
+async function getTaskForUser(userId, taskId) {
+  const task = await prisma.userTask.findFirst({
+    where: { userId, taskId, isActive: true },
+  });
+  // If the task is not found, throw an error
+  if (!task) {
+    throw new Error("Task is not available for user.");
+  }
+  // If the task is found, get the task data
+  const taskData = await prisma.task.findUnique({
+    where: { id: task.taskId },
+  });
+  return { ...task, taskData };
+}
+
 async function assignTask(userId, taskId) {
   // On create entry for user and task link, it is active and has 0 progress by default
   // If the task is being updated, that means the task was inactive and completed previously
@@ -76,6 +115,8 @@ async function completeTask(userId, taskId) {
 }
 
 module.exports = {
+  getAllActiveTasksForUser,
+  getTaskForUser,
   assignTask,
   completeTask,
 };
