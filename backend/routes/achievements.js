@@ -3,14 +3,14 @@ const router = express.Router();
 const achievementController = require("../controllers/achievementController");
 
 // Get all achievements
-router.get("/achievements", achievementController.getAllAchievements);
+router.get("/", achievementController.getAllAchievements);
 // Get a single achievement by ID
-router.get("/achievements/:id", achievementController.getAchievementById);
-// Update an achievement by ID
-router.patch("/achievements/:id", achievementController.updateAchievement);
+router.get("/:id", achievementController.getAchievementById);
 // Create a new achievement
-router.post("/achievements", achievementController.createAchievement);
+router.post("/", achievementController.createAchievement);
+// Update an achievement by ID
+router.patch("/:id", achievementController.updateAchievement);
 // Delete an achievement by ID
-router.delete("/achievements/:id", achievementController.deleteAchievement);
+router.delete("/:id", achievementController.deleteAchievement);
 
 module.exports = router;
