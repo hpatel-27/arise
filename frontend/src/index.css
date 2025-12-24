@@ -1,5 +1,10 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: italic;
+}
 
 :root {
   line-height: 1.5;
