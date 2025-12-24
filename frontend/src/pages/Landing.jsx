@@ -26,9 +26,6 @@ export default function Landing() {
             <Link to="/register">
               <Button variant="primary">Start Your Journey</Button>
             </Link>
-            <Link to="/login">
-              <Button variant="accent">Login</Button>
-            </Link>
           </div>
         </section>
 
