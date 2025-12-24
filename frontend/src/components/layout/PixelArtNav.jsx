@@ -29,7 +29,7 @@ export function PixelArtNav() {
             <img
               src="/src/assets/sword-jin-woo.png"
               alt="Sword"
-              className="h-8 w-auto"
+              className="h-10 w-auto"
             />
           </Link>
 
