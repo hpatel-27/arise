@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../ui/Button';
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { Button } from "../ui/Button";
 
 export function PixelArtNav() {
   const { user, logout } = useAuth();
@@ -8,20 +8,20 @@ export function PixelArtNav() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/tasks', label: 'Tasks' },
-    { path: '/stats', label: 'Stats' },
-    { path: '/achievements', label: 'Achievements' },
-    { path: '/profile', label: 'Profile' },
-    { path: '/about', label: 'About' }
+    { path: "/", label: "Home" },
+    { path: "/tasks", label: "Tasks" },
+    { path: "/stats", label: "Stats" },
+    { path: "/achievements", label: "Achievements" },
+    { path: "/profile", label: "Profile" },
+    { path: "/about", label: "About" },
   ];
 
   return (
-    <nav className="border-b-4 border-dark bg-dark">
+    <nav className=" bg-gradient-to-br from-gray-700/70 via-gray-800/70 to-gray-700/30 shadow-lg ">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
@@ -37,7 +37,7 @@ export function PixelArtNav() {
             {user ? (
               <>
                 <div className="hidden md:flex gap-2">
-                  {navLinks.map(link => (
+                  {navLinks.map((link) => (
                     <Link
                       key={link.path}
                       to={link.path}
@@ -67,4 +67,3 @@ export function PixelArtNav() {
     </nav>
   );
 }
-
