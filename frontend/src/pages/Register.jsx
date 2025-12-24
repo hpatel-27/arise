@@ -1,5 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { register } from "../services/authService";
+import { AppShell } from "../components/layout/AppShell";
+import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
 import { ToastContainer } from "react-toastify";
 import { defaultNotification } from "../utils/notify";
 import { useNavigate } from "react-router-dom";
@@ -44,109 +49,90 @@ const Register = () => {
   };
 
   return (
-    <>
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            alt="Pixel art of Sung Jin-Woo's sword"
-            src="/src/assets/sword-jin-woo.png"
-            className="mx-auto h-10 w-auto"
-          />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
-            Sign up for an account
-          </h2>
-        </div>
+    <AppShell>
+      <div className="max-w-md mx-auto py-12">
+        <Card>
+          <div className="text-center mb-6">
+            <img
+              alt="Pixel art of Sung Jin-Woo's sword"
+              src="/src/assets/sword-jin-woo.png"
+              className="mx-auto h-12 w-auto mb-4"
+            />
+            <h2 className="font-pixel text-lg text-primary">Create Account</h2>
+          </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm/6 font-medium text-gray-100"
+                className="block font-pixel text-xs text-white mb-2"
               >
-                Email address
+                Email
               </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
-                />
-              </div>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-100"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="new-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-100"
-                >
-                  Confirm Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="confirm_password"
-                  name="confirm_password"
-                  type="password"
-                  required
-                  autoComplete="new-password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 cursor-pointer shadow-sm transition ease-in-out"
+              <label
+                htmlFor="password"
+                className="block font-pixel text-xs text-white mb-2"
               >
-                {isSubmitting ? "Creating Account..." : "Create Account"}
-              </button>
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password (min 8 characters)"
+                required
+              />
             </div>
+
+            <div>
+              <label
+                htmlFor="confirm_password"
+                className="block font-pixel text-xs text-white mb-2"
+              >
+                Confirm Password
+              </label>
+              <Input
+                id="confirm_password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-full"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Creating Account..." : "Create Account"}
+            </Button>
           </form>
 
-          <p className="mt-10 text-center text-sm/6 text-gray-400">
+          <p className="mt-6 text-center font-pixel text-xs text-white opacity-80">
             Already have an account?{" "}
-            <a
-              href="/login"
-              className="font-semibold text-blue-400 hover:text-blue-500"
-            >
+            <Link to="/login" className="text-primary hover:text-accent">
               Sign in here
-            </a>
+            </Link>
           </p>
-        </div>
+        </Card>
       </div>
       <ToastContainer />
-    </>
+    </AppShell>
   );
 };
 
