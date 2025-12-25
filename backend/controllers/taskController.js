@@ -78,7 +78,7 @@ async function deleteTask(req, res) {
     id = parseInt(id, 10);
 
     const task = await taskService.deleteTask(id);
-    return task;
+    res.json(task);
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
