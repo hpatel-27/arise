@@ -7,9 +7,10 @@ async function register(email, password) {
   if (existingUser) throw new Error("Email already in use");
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  return prisma.user.create({
+  const user = await prisma.user.create({
     data: { email, password: hashedPassword },
   });
+  return user;
 }
 
 async function login(email, password) {
