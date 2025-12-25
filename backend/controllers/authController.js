@@ -1,9 +1,13 @@
 const authService = require("../services/authService");
+const statService = require("../services/statService");
 
 async function register(req, res) {
   try {
     const { email, password } = req.body;
     const user = await authService.register(email, password);
+
+    // Initialize stats for the user
+    await statService.initializeStats(user.id);
     return res.status(201).json(user);
   } catch (error) {
     if (error.message === "Email already in use")
