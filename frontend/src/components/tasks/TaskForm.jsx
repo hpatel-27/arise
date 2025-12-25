@@ -5,9 +5,9 @@ import { Button } from "../ui/Button";
 
 const STAT_OPTIONS = [
   { id: 1, name: "Strength" },
-  { id: 2, name: "Intelligence" },
-  { id: 3, name: "Vitality" },
-  { id: 4, name: "Agility" },
+  { id: 2, name: "Agility" },
+  { id: 3, name: "Intelligence" },
+  { id: 4, name: "Vitality" },
   { id: 5, name: "Perception" },
 ];
 
