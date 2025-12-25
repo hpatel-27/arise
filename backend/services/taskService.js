@@ -39,15 +39,13 @@ async function updateTask(id, data) {
   return task;
 }
 
-async function deleteTask(id) {
-  let parsedId = parseInt(id, 10);
-
+async function deleteTask(taskId) {
   const existingTask = await prisma.task.findUnique({
-    where: { id: parsedId },
+    where: { id: taskId },
   });
-  if (!existingTask) throw new Error(`Task with id "${id}" not found.`);
+  if (!existingTask) throw new Error(`Task with id "${taskId}" not found.`);
 
-  const task = await prisma.task.delete({ where: { id: parsedId } });
+  const task = await prisma.task.delete({ where: { id: taskId } });
   return task;
 }
 
