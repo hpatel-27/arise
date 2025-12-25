@@ -3,6 +3,19 @@ import { TaskCard } from "./TaskCard";
 import { Input } from "../ui/Input";
 import { StatBadge } from "../stats/StatBadge";
 
+// helper function to translate a categoryId to its name
+const translateCategory = (categoryId) => {
+  const categories = {
+    1: "Strength",
+    2: "Agility",
+    3: "Intelligence",
+    4: "Vitality",
+    5: "Perception",
+  };
+
+  return categories[categoryId];
+};
+
 export function TaskList({
   tasks,
   userTasks = [],
@@ -27,7 +40,7 @@ export function TaskList({
       (task.description &&
         task.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStat =
-      filterStat === "all" || (task.category && task.category === filterStat);
+      filterStat === "all" || translateCategory(task.categoryId) === filterStat;
     return matchesSearch && matchesStat;
   });
 
