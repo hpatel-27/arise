@@ -1,33 +1,54 @@
-import { useState } from 'react';
-import { TaskCard } from './TaskCard';
-import { Input } from '../ui/Input';
-import { StatBadge } from '../stats/StatBadge';
+import { useState } from "react";
+import { TaskCard } from "./TaskCard";
+import { Input } from "../ui/Input";
+import { StatBadge } from "../stats/StatBadge";
 
-export function TaskList({ 
-  tasks, 
-  userTasks = [], 
-  onAssign, 
+// helper function to translate a categoryId to its name
+const translateCategory = (categoryId) => {
+  const categories = {
+    1: "Strength",
+    2: "Agility",
+    3: "Intelligence",
+    4: "Vitality",
+    5: "Perception",
+  };
+
+  return categories[categoryId];
+};
+
+export function TaskList({
+  tasks,
+  userTasks = [],
+  onAssign,
   onComplete,
-  loading = false 
+  loading = false,
 }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStat, setFilterStat] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStat, setFilterStat] = useState("all");
 
-  const statNames = ['Strength', 'Intelligence', 'Vitality', 'Agility', 'Perception'];
+  const statNames = [
+    "Strength",
+    "Intelligence",
+    "Vitality",
+    "Agility",
+    "Perception",
+  ];
 
-  const filteredTasks = tasks.filter(task => {
-    const matchesSearch = task.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (task.description && task.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStat = filterStat === 'all' || 
-                        (task.category && task.category.name === filterStat);
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch =
+      task.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (task.description &&
+        task.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesStat =
+      filterStat === "all" || translateCategory(task.categoryId) === filterStat;
     return matchesSearch && matchesStat;
   });
 
   const getUserTaskStatus = (taskId) => {
-    const userTask = userTasks.find(ut => ut.taskId === taskId);
+    const userTask = userTasks.find((ut) => ut.taskId === taskId);
     return {
       isAssigned: !!userTask,
-      isCompleted: userTask?.completed || false
+      isCompleted: userTask?.completed || false,
     };
   };
 
@@ -47,26 +68,26 @@ export function TaskList({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        
+
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => setFilterStat('all')}
+            onClick={() => setFilterStat("all")}
             className={`px-3 py-1 border-4 font-pixel text-xs ${
-              filterStat === 'all'
-                ? 'bg-primary border-dark text-background'
-                : 'bg-background border-dark text-white'
+              filterStat === "all"
+                ? "bg-primary border-dark text-background"
+                : "bg-background border-dark text-white"
             }`}
           >
             All
           </button>
-          {statNames.map(stat => (
+          {statNames.map((stat) => (
             <button
               key={stat}
               onClick={() => setFilterStat(stat)}
               className={`px-3 py-1 border-4 font-pixel text-xs flex items-center gap-1 ${
                 filterStat === stat
-                  ? 'bg-primary border-dark text-background'
-                  : 'bg-background border-dark text-white'
+                  ? "bg-primary border-dark text-background"
+                  : "bg-background border-dark text-white"
               }`}
             >
               <StatBadge statName={stat} size="sm" />
@@ -82,7 +103,7 @@ export function TaskList({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredTasks.map(task => {
+          {filteredTasks.map((task) => {
             const { isAssigned, isCompleted } = getUserTaskStatus(task.id);
             return (
               <TaskCard
@@ -100,4 +121,3 @@ export function TaskList({
     </div>
   );
 }
-
