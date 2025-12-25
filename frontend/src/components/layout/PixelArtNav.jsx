@@ -12,7 +12,7 @@ export function PixelArtNav() {
   };
 
   const navLinks = [
-    { path: "/", label: "Home" },
+    { path: "/home", label: "Home" },
     { path: "/tasks", label: "Tasks" },
     { path: "/stats", label: "Stats" },
     { path: "/achievements", label: "Achievements" },
