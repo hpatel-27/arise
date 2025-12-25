@@ -4,12 +4,191 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #303030;
+  color-scheme: dark;
+  color: #eaeaea;
+  background-color: #1a1a2e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+  color: #eaeaea;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.font-pixel {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: optimizeSpeed;
+}
+
+/* Pixel-art color palette */
+.bg-primary {
+  background-color: #5dabff;
+}
+
+.bg-secondary {
+  background-color: #ff6b6b;
+}
+
+.bg-accent {
+  background-color: #ffd93d;
+}
+
+.bg-dark {
+  background-color: #2d3e56;
+}
+
+.bg-background {
+  background-color: #1b1b28;
+}
+
+.text-primary {
+  color: #5dabff;
+}
+
+.text-secondary {
+  color: #ff6b6b;
+}
+
+.text-accent {
+  color: #ffd93d;
+}
+
+.text-dark {
+  color: #2d4059;
+}
+
+.border-primary {
+  border-color: #5dabff;
+}
+
+.border-secondary {
+  border-color: #ff6b6b;
+}
+
+.border-accent {
+  border-color: #ffd93d;
+}
+
+.border-dark {
+  border-color: #2d4059;
+}
+
+/* Pixel button styles */
+.btn-pixel {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.625rem;
+  padding: 0.75rem 1rem;
+  border: 4px solid;
+  background-color: #5dabff;
+  border-color: #2e3b50;
+  color: #1a1a2e;
+  cursor: pointer;
+  transition: transform 0.1s step-end;
+  text-transform: uppercase;
+}
+
+.btn-pixel:hover {
+  background-color: #5297e0;
+}
+
+.btn-pixel:active {
+  transform: translateY(2px);
+}
+
+.btn-pixel-secondary {
+  background-color: #ff6b6b;
+  border-color: #2d4059;
+}
+
+.btn-pixel-secondary:hover {
+  background-color: #e55a5a;
+}
+
+.btn-pixel-accent {
+  background-color: #816ed8;
+  border-color: #2d4059;
+}
+
+.btn-pixel-accent:hover {
+  background-color: #7261be;
+}
+
+/* Blocky progress bars */
+.progress-bar {
+  width: 100%;
+  height: 2rem;
+  border: 4px solid #2d4059;
+  background-color: #1a1a2e;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #5dabff;
+  border-right: 4px solid #2d4059;
+  transition: width 0.3s steps(10, end);
+}
+
+/* Pixel card styles */
+.card-pixel {
+  border: 4px solid #2d4059;
+  background-color: #1a1a2e;
+  padding: 1rem;
+}
+
+/* Stepped animations for pixel art buttons and progress bars */
+.btn-pixel,
+.progress-fill {
+  transition-timing-function: steps(4, end) !important;
+}
+
+/* Stepped animations */
+@keyframes pixel-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pixel-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes pixel-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

@@ -1,11 +1,15 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { AppShell } from "../components/layout/AppShell";
+import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
 import { ToastContainer } from "react-toastify";
 import { defaultNotification } from "../utils/notify";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -14,103 +18,75 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      // Login successful, redirect to home
       navigate("/home");
     } catch (error) {
-      // console.error("Login failed", error);
       defaultNotification(`Login failed: ${error.message}`, "error");
     }
   };
 
   return (
-    <>
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            alt="Pixel art of Sung Jin-Woo's sword"
-            src="/src/assets/sword-jin-woo.png"
-            className="mx-auto h-10 w-auto"
-          />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
-            Sign in to your account
-          </h2>
-        </div>
+    <AppShell>
+      <div className="max-w-md mx-auto py-12">
+        <Card>
+          <div className="text-center mb-6">
+            <img
+              alt="Pixel art of Sung Jin-Woo's sword"
+              src="/src/assets/sword-jin-woo.png"
+              className="mx-auto h-12 w-auto mb-4"
+            />
+            <h2 className="font-pixel text-lg text-primary">Sign In</h2>
+          </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm/6 font-medium text-gray-100"
+                className="block font-pixel text-xs text-white mb-2"
               >
-                Email address
+                Email
               </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
-                />
-              </div>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-100"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-blue-400 hover:text-blue-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-400 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 cursor-pointer shadow-sm transition ease-in-out"
+              <label
+                htmlFor="password"
+                className="block font-pixel text-xs text-white mb-2"
               >
-                Sign in
-              </button>
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+              />
             </div>
+
+            <Button type="submit" variant="primary" className="w-full">
+              Sign In
+            </Button>
           </form>
 
-          <p className="mt-10 text-center text-sm/6 text-gray-400">
+          <p className="mt-6 text-center font-pixel text-xs text-white opacity-80">
             Don't have an account?{" "}
-            <a
-              href="/register"
-              className="font-semibold text-blue-400 hover:text-blue-500"
-            >
+            <Link to="/register" className="text-primary hover:text-accent">
               Register here
-            </a>
+            </Link>
           </p>
-        </div>
+        </Card>
       </div>
       <ToastContainer />
-    </>
+    </AppShell>
   );
 };
 
