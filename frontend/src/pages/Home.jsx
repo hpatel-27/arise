@@ -144,7 +144,9 @@ export default function Home() {
         </section>
 
         <section>
-          <h2 className="font-pixel text-lg text-white mb-4">Active Tasks</h2>
+          <h2 className="font-pixel text-lg text-white mb-4">
+            Available Tasks
+          </h2>
           {userTasksLoading || tasksLoading ? (
             <p className="font-pixel text-sm text-white">Loading tasks...</p>
           ) : (

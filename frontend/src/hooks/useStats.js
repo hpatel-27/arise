@@ -18,7 +18,7 @@ export function useStats() {
           return;
         }
         const data = await statsService.getMyStats(token);
-        setStats(data);
+        setStats(data.stats);
         setError(null);
       } catch (err) {
         // If stats don't exist, try to initialize

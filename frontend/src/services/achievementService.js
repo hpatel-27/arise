@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost";
 const API_PREFIX = import.meta.env.VITE_API_PREFIX || "/api/v1";
 
 export const achievementService = {
