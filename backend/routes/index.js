@@ -20,4 +20,7 @@ module.exports = (app, API_PREFIX) => {
 
   // User Task routes
   app.use(`${API_PREFIX}/userTasks`, require("./userTasks"));
+
+  // User log routes
+  app.use(`${API_PREFIX}/logs`, require("./logs"));
 };
