@@ -11,8 +11,9 @@ async function recordUserAction(userId, actionType, metadata = {}) {
 }
 
 async function getAllLogs() {
-  const logs = await prisma.userLog.findMany();
-  if (!logs) throw new Error("No logs found");
+  const logs = await prisma.userLog.findMany({
+    orderBy: { timestamp: "desc" },
+  });
   return logs;
 }
 
@@ -23,13 +24,15 @@ async function getLogById(logId) {
 }
 
 async function getUserLogs(userId) {
-  const logs = await prisma.userLog.findMany({ where: { userId } });
-  if (!logs) throw new Error("No logs found for user");
+  const logs = await prisma.userLog.findMany({
+    where: { userId },
+    orderBy: { timestamp: "desc" },
+  });
   return logs;
 }
 
 async function getUserLog(userId, logId) {
-  const log = await prisma.userLog.findUnique({
+  const log = await prisma.userLog.findFirst({
     where: { id: logId, userId },
   });
   if (!log) throw new Error("Log not found");
