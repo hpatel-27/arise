@@ -1,3 +1,5 @@
+const logService = require("../services/logService");
+
 async function getAllLogs(req, res) {
   try {
     const logs = await logService.getAllLogs();
@@ -13,7 +15,15 @@ async function getAllLogs(req, res) {
 
 async function getLogById(req, res) {
   try {
-    const log = await logService.getLogById(req.params.logId);
+    let { logId } = req.params;
+    logId = parseInt(logId, 10);
+    if (isNaN(logId)) {
+      throw new Error("Invalid logId");
+    }
+    if (logId <= 0) {
+      throw new Error("LogId must be greater than 0");
+    }
+    const log = await logService.getLogById(logId);
     res.status(200).json(log);
   } catch (error) {
     if (
