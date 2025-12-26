@@ -1,20 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const categoryController = require("../controllers/categoryController");
+const { authenticate } = require("../middleware/authMiddleware");
+const { requireAdmin } = require("../middleware/adminMiddleware");
 
 // Get all categories
-router.get("/", categoryController.getAllCategories);
+router.get("/", authenticate, categoryController.getAllCategories);
 
 // Get a single category by ID
-router.get("/:id", categoryController.getCategoryById);
+router.get("/:id", authenticate, categoryController.getCategoryById);
 
-// Create a new category
-router.post("/", categoryController.createCategory);
+// Create a new category (admin only)
+router.post("/", requireAdmin, categoryController.createCategory);
 
-// Update a category by ID
-router.patch("/:id", categoryController.updateCategory);
+// Update a category by ID (admin only)
+router.patch("/:id", requireAdmin, categoryController.updateCategory);
 
-// Delete a category by ID
-router.delete("/:id", categoryController.deleteCategory);
+// Delete a category by ID (admin only)
+router.delete("/:id", requireAdmin, categoryController.deleteCategory);
 
 module.exports = router;
