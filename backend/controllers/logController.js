@@ -1,9 +1,10 @@
 const logService = require("../services/logService");
+const { userLogDTO } = require("../dtos/userLog.dto");
 
 async function getAllLogs(req, res) {
   try {
     const logs = await logService.getAllLogs();
-    res.status(200).json(logs);
+    res.status(200).json(logs.map(userLogDTO));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -21,7 +22,7 @@ async function getLogById(req, res) {
       return res.status(400).json({ error: "Invalid logId" });
     }
     const log = await logService.getLogById(logId);
-    res.status(200).json(log);
+    res.status(200).json(userLogDTO(log));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -40,7 +41,7 @@ async function getUserLogs(req, res) {
     }
 
     const logs = await logService.getUserLogs(userId);
-    res.status(200).json(logs);
+    res.status(200).json(logs.map(userLogDTO));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -65,7 +66,7 @@ async function getUserLog(req, res) {
     }
 
     const log = await logService.getUserLog(userId, logId);
-    res.status(200).json(log);
+    res.status(200).json(userLogDTO(log));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });

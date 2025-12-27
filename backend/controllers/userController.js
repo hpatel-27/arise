@@ -1,10 +1,11 @@
 const userService = require("../services/userService");
 const pickFields = require("../utils/pickFields");
+const { userDTO } = require("../dtos/user.dto");
 
 async function getAllUsers(req, res) {
   try {
     const users = await userService.getAllUsers();
-    res.json(users);
+    res.json(users.map(userDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -15,7 +16,7 @@ async function getUserById(req, res) {
     const userId = req.user.userId;
 
     const user = await userService.getUserById(userId);
-    res.json(user);
+    res.json(userDTO(user));
   } catch (error) {
     if (error.message === "User not found") {
       res.status(404).json({ error: error.message });
@@ -30,7 +31,7 @@ async function deleteUser(req, res) {
     const userId = req.user.userId;
 
     const user = await userService.deleteUser(userId);
-    res.json(user);
+    res.json(userDTO(user));
   } catch (error) {
     if (error.message === "User not found") {
       res.status(404).json({ error: error.message });
@@ -54,7 +55,7 @@ async function updateUser(req, res) {
     const user = await userService.updateUser(userId, data);
     // if it did not update, it will have thrown an error
 
-    res.json(user);
+    res.json(userDTO(user));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

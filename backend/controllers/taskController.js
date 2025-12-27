@@ -1,10 +1,11 @@
 const taskService = require("../services/taskService");
 const pickFields = require("../utils/pickFields");
+const { taskDTO } = require("../dtos/task.dto");
 
 async function getAllTasks(req, res) {
   try {
     const tasks = await taskService.getAllTasks();
-    res.json(tasks);
+    res.json(tasks.map(taskDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -15,7 +16,7 @@ async function getTaskById(req, res) {
     let { id } = req.params;
     id = parseInt(id, 10);
     const task = await taskService.getTaskById(id);
-    res.json(task);
+    res.json(taskDTO(task));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -35,7 +36,7 @@ async function createTask(req, res) {
     };
 
     const task = await taskService.createTask(data);
-    res.status(201).json(task);
+    res.status(201).json(taskDTO(task));
   } catch (error) {
     if (error.message.includes("already exists")) {
       res.status(409).json({ error: `Task "${data.name}" already exists.` });
@@ -62,7 +63,7 @@ async function updateTask(req, res) {
     id = parseInt(id, 10);
 
     const task = await taskService.updateTask(id, data);
-    res.json(task);
+    res.json(taskDTO(task));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -78,7 +79,7 @@ async function deleteTask(req, res) {
     id = parseInt(id, 10);
 
     const task = await taskService.deleteTask(id);
-    res.json(task);
+    res.json(taskDTO(task));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
