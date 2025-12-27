@@ -1,10 +1,11 @@
 const categoryService = require("../services/categoryService");
 const pickFields = require("../utils/pickFields");
+const { categoryDTO } = require("../dtos/category.dto");
 
 async function getAllCategories(req, res) {
   try {
     const categories = await categoryService.getAllCategories();
-    res.json(categories);
+    res.json(categories.map(categoryDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -16,7 +17,7 @@ async function getCategoryById(req, res) {
     id = parseInt(id, 10);
 
     const category = await categoryService.getCategoryById(id);
-    res.json(category);
+    res.json(categoryDTO(category));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -37,7 +38,7 @@ async function createCategory(req, res) {
     };
 
     const category = await categoryService.createCategory(data);
-    res.status(201).json(category);
+    res.status(201).json(categoryDTO(category));
   } catch (error) {
     if (error.message.includes("already exists")) {
       res
@@ -62,7 +63,7 @@ async function updateCategory(req, res) {
     id = parseInt(id, 10);
 
     const category = await categoryService.updateCategory(id, data);
-    res.status(200).json(category);
+    res.json(categoryDTO(category));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
@@ -79,7 +80,7 @@ async function deleteCategory(req, res) {
     id = parseInt(id, 10);
 
     const category = await categoryService.deleteCategory(id);
-    res.json(category);
+    res.json(categoryDTO(category));
   } catch (error) {
     if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
