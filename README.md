@@ -68,7 +68,7 @@ Every user starts with **Level 10** in each stat:
 ## Project Structure
 
 ```
-life-rpg/
+arise/
 ├── client/                    # React frontend
 │   ├── public/
 │   │   └── assets/           # Pixel art images, sprites
@@ -116,8 +116,8 @@ life-rpg/
 1. **Clone the repository**
 
 ```bash
-   git clone https://github.com/yourusername/life-rpg.git
-   cd life-rpg
+   git clone https://github.com/hpatel-27/arise.git
+   cd arise
 ```
 
 2. **Set up the backend**
@@ -133,7 +133,7 @@ life-rpg/
 
 ```env
    PORT=3000
-   DATABASE_URL=postgresql://username:password@localhost:5432/life_rpg
+   DATABASE_URL=postgresql://username:password@localhost:5432/arise
    JWT_SECRET=your_super_secret_jwt_key_here
    API_PREFIX=/api/v1
    NODE_ENV=development
@@ -160,7 +160,7 @@ life-rpg/
    
    **Note**: Make sure your `DATABASE_URL` in `.env` is configured correctly:
 ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/life_rpg?schema=public"
+   DATABASE_URL="postgresql://username:password@localhost:5432/arise?schema=public"
 ```
    
    **Useful Prisma Commands:**
@@ -181,7 +181,7 @@ life-rpg/
    npm run dev
 ```
 
-Server will run on `http://localhost:53000`
+Server will run on `http://localhost:5000`
 
 6. **Set up the frontend**
 
@@ -215,7 +215,7 @@ App will open at `http://localhost:3000` (or next available port)
 ### Base URL
 
 ```
-http://localhost:3000/api/v1
+http://localhost:5000/api/v1
 ```
 
 ### Authentication
@@ -343,7 +343,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Inspired by [Habitica](https://habitica.com/) and classic 16-bit RPGs
-- Pixel art aesthetic inspired by NES/SNES era games
+- Pixel art aesthetic inspired by pixel art era games
 - Built as a portfolio project to demonstrate full-stack development skills
 
 ---
