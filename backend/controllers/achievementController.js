@@ -1,10 +1,11 @@
 const achievementService = require("../services/achievementService");
 const pickFields = require("../utils/pickFields");
+const { achievementDTO } = require("../dtos/achievement.dto");
 
 async function getAllAchievements(req, res) {
   try {
     const achievements = await achievementService.getAllAchievements();
-    res.json(achievements);
+    res.json(achievements.map(achievementDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -21,7 +22,7 @@ async function createAchievement(req, res) {
     };
 
     const achievement = await achievementService.createAchievement(data);
-    res.status(201).json(achievement);
+    res.status(201).json(achievementDTO(achievement));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -36,7 +37,7 @@ async function getAchievementById(req, res) {
     if (!achievement) {
       return res.status(404).json({ error: "Achievement not found" });
     }
-    res.json(achievement);
+    res.json(achievementDTO(achievement));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -64,7 +65,7 @@ async function updateAchievement(req, res) {
       return res.status(404).json({ error: "Achievement not found" });
     }
 
-    res.json(achievement);
+    res.json(achievementDTO(achievement));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -76,7 +77,7 @@ async function deleteAchievement(req, res) {
     let { id } = req.params;
     id = parseInt(id, 10);
     const achievement = await achievementService.deleteAchievement(id);
-    res.json(achievement);
+    res.json(achievementDTO(achievement));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

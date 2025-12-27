@@ -1,11 +1,12 @@
 const statService = require("../services/statService");
+const { userStatDTO } = require("../dtos/userStat.dto");
 
 async function initializeStats(req, res) {
   try {
     // User id should be passed through request, since this should happen at registration
     const userId = req.body.userId;
     const userStats = await statService.initializeStats(userId);
-    res.status(201).json(userStats);
+    res.status(201).json(userStats.map(userStatDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -20,7 +21,7 @@ async function getStats(req, res) {
       stats: statInfo,
     };
 
-    res.json(userStats);
+    res.json(userStats.map(userStatDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -34,7 +35,7 @@ async function getStatByCategory(req, res) {
     categoryId = parseInt(categoryId, 10);
 
     const stat = await statService.getStatByCategory(userId, categoryId);
-    res.json(stat);
+    res.json(userStatDTO(stat));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -52,7 +53,7 @@ async function updateStat(req, res) {
       categoryId,
       xpEarned
     );
-    res.status(204).json(updatedStat);
+    res.status(204).json(userStatDTO(updatedStat));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
