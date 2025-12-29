@@ -2,6 +2,7 @@ const {
   mockUserExists,
   mockUserNotFound,
 } = require("../../helpers/mockUserPrisma");
+const { buildUser } = require("../../helpers/userFactory");
 
 // mock real prisma client before importing it
 jest.mock("../../../db");
@@ -171,5 +172,50 @@ describe("Unit Testing UserService", () => {
     });
   });
 
-  describe("updateUser", () => {});
+  describe("updateUser", () => {
+    test("update user that exists", async () => {
+      // build user, this will set findUnique
+      const user = mockUserExists({
+        id: "user-1",
+        email: "update@email.com",
+      });
+
+      // update user email to what we will expect that user to have after update
+      user.email = "testupdate1@email.com";
+      prisma.user.update.mockResolvedValue(user);
+
+      const data = {
+        email: "testupdate1@email.com",
+      };
+      const result = await userService.updateUser("user-1", data);
+
+      expect(result).toEqual(user);
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: "user-1" },
+        data,
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+    });
+
+    test("throw error updating user that doesn't exist", async () => {
+      const userId = "missing-id";
+      mockUserNotFound();
+
+      // pass in the missing user id and an empty data object
+      await expect(userService.updateUser(userId, {})).rejects.toThrow(
+        `User with id "missing-id" not found.`
+      );
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: userId },
+      });
+    });
+  });
 });
