@@ -32,6 +32,11 @@ async function getUserById(id) {
 }
 
 async function deleteUser(id) {
+  const existingUser = await prisma.user.findUnique({
+    where: { id: id },
+  });
+  if (!existingUser) throw new Error(`User with id "${id}" not found.`);
+
   const user = await prisma.user.delete({
     where: { id },
     select: {
@@ -43,8 +48,6 @@ async function deleteUser(id) {
       updatedAt: true,
     },
   });
-
-  if (!user) throw new Error("User not found");
   // return the user that was deleted
   return user;
 }
