@@ -53,6 +53,11 @@ async function deleteUser(id) {
 }
 
 async function updateUser(id, data) {
+  const existingUser = await prisma.user.findUnique({
+    where: { id: id },
+  });
+  if (!existingUser) throw new Error(`User with id "${id}" not found.`);
+
   const user = await prisma.user.update({
     where: { id },
     data,
@@ -65,7 +70,6 @@ async function updateUser(id, data) {
       updatedAt: true,
     },
   });
-  if (!user) throw new Error("User not found");
   return user;
 }
 
