@@ -40,6 +40,7 @@ async function getStats(userId) {
   });
 
   const stats = existingStats.map((stat) => ({
+    id: stat.id,
     category: translateCategory(stat.categoryId),
     currentXP: stat.currentXP,
     statLevel: stat.statLevel,

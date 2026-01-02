@@ -17,11 +17,12 @@ async function getStats(req, res) {
     const userId = req.user.userId;
     // Get the user's stats and return them
     const statInfo = await statService.getStats(userId);
+    statInfo.map(userStatDTO);
     const userStats = {
       stats: statInfo,
     };
 
-    res.json(userStats.map(userStatDTO));
+    res.json(userStats);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

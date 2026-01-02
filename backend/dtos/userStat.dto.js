@@ -1,7 +1,7 @@
 function userStatDTO(userStat) {
   return {
     id: userStat.id,
-    categoryId: userStat.categoryId,
+    category: userStat.category,
     currentXP: userStat.currentXP,
     statLevel: userStat.statLevel,
   };
