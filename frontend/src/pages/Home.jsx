@@ -10,6 +10,7 @@ import { TaskForm } from "../components/tasks/TaskForm";
 import { XpGainAnimation } from "../components/progression/XpGainAnimation";
 import { LevelUpAnimation } from "../components/stats/LevelUpAnimation";
 import { AchievementNotification } from "../components/achievements/AchievementNotification";
+import { AssignedTaskList } from "../components/tasks/AssignedTaskList";
 
 export default function Home() {
   const { stats, loading: statsLoading, refresh: refreshStats } = useStats();
@@ -144,8 +145,22 @@ export default function Home() {
         </section>
 
         <section>
+          <h2 className="font-pixel text-lg text-white mb-4">My Tasks</h2>
+          {userTasksLoading || tasksLoading ? (
+            <p className="font-pixel text-sm text-white">Loading tasks...</p>
+          ) : (
+            <AssignedTaskList
+              tasks={tasks}
+              userTasks={userTasks}
+              onAssign={handleAssignTask}
+              onComplete={handleCompleteTask}
+            />
+          )}
+        </section>
+
+        <section>
           <h2 className="font-pixel text-lg text-white mb-4">
-            Available Tasks
+            All Available Tasks
           </h2>
           {userTasksLoading || tasksLoading ? (
             <p className="font-pixel text-sm text-white">Loading tasks...</p>
