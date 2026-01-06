@@ -55,14 +55,6 @@ export default function Tasks() {
           </Button>
         </div>
 
-        <AssignedTaskList
-          tasks={tasks}
-          userTasks={userTasks}
-          onAssign={handleAssignTask}
-          onComplete={handleCompleteTask}
-          loading={tasksLoading || userTasksLoading}
-        />
-
         <TaskList
           tasks={tasks}
           userTasks={userTasks}

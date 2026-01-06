@@ -157,22 +157,6 @@ export default function Home() {
             />
           )}
         </section>
-
-        <section>
-          <h2 className="font-pixel text-lg text-white mb-4">
-            All Available Tasks
-          </h2>
-          {userTasksLoading || tasksLoading ? (
-            <p className="font-pixel text-sm text-white">Loading tasks...</p>
-          ) : (
-            <TaskList
-              tasks={tasks}
-              userTasks={userTasks}
-              onAssign={handleAssignTask}
-              onComplete={handleCompleteTask}
-            />
-          )}
-        </section>
       </div>
 
       <TaskForm
