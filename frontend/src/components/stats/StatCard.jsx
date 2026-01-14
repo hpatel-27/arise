@@ -7,7 +7,7 @@ export function StatCard({ stat }) {
   const xpCurrent = currentXP || 0;
 
   return (
-    <div className="card-pixel">
+    <div className="card-pixel" data-stat-name={category}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <StatBadge statName={category} size="lg" />
