@@ -111,7 +111,13 @@ async function completeTask(userId, taskId) {
   // log that that the stats have changed
   await logService.recordUserAction(userId, "stat_update", updatedStats);
 
-  return result.completedTask;
+  // Return completion data with animation information
+  return {
+    ...result.completedTask,
+    statName: statService.translateCategory(result.taskData.categoryId),
+    levelUp: updatedStats.levelUp,
+    newLevel: updatedStats.statLevel,
+  };
 }
 
 module.exports = {
