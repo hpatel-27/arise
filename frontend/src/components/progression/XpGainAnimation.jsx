@@ -22,7 +22,7 @@ export function XpGainAnimation({ isVisible, xpAmount, statName }) {
           >
             +{xpAmount} XP
           </motion.div>
-          {/* {statName && (
+          {statName && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -31,7 +31,7 @@ export function XpGainAnimation({ isVisible, xpAmount, statName }) {
             >
               {statName}
             </motion.div>
-          )} */}
+          )}
         </div>
       </motion.div>
     </AnimatePresence>
