@@ -50,12 +50,14 @@ export default function Home() {
   const handleCompleteTask = async (taskId) => {
     try {
       const result = await completeTask(taskId);
+      // console.log("Task completion result:", result);
 
       // Show XP gain animation
-      if (result.xpGained) {
+      if (result.xpEarned) {
+        // console.log("Showing XP animation:", result.xpEarned, result.statName);
         setXpAnimation({
           visible: true,
-          amount: result.xpGained,
+          amount: result.xpEarned,
           statName: result.statName || "",
         });
         setTimeout(
@@ -66,6 +68,11 @@ export default function Home() {
 
       // Check for level up
       if (result.levelUp) {
+        // console.log(
+        //   "Showing level up animation:",
+        //   result.statName,
+        //   result.newLevel
+        // );
         setLevelUpAnimation({
           visible: true,
           statName: result.statName || "",
@@ -91,8 +98,14 @@ export default function Home() {
         );
       }
 
-      await refreshStats();
-      await refreshUserTasks();
+      // Delay refresh to allow animations to mount and display
+      // Use requestAnimationFrame to ensure animations have rendered
+      requestAnimationFrame(() => {
+        setTimeout(async () => {
+          await refreshStats();
+          await refreshUserTasks();
+        }, 100);
+      });
     } catch (error) {
       console.error("Failed to complete task:", error);
     }

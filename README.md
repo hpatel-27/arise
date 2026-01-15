@@ -1,4 +1,4 @@
-# Arise - Gamify Your Life
+# Arise - Level Up Your Life
 
 A gamified life-improvement application that turns real-world tasks into RPG-style character progression. Complete tasks, gain XP, level up your stats, and unlock achievements as you improve yourself in real life.
 
@@ -342,8 +342,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Inspired by [Habitica](https://habitica.com/) and classic 16-bit RPGs
-- Pixel art aesthetic inspired by pixel art era games
+- Inspired by [Habitica](https://habitica.com/) 
+- Pixel art aesthetic inspired by pixel art era games, such as the DS generation of Pokémon.
 - Built as a portfolio project to demonstrate full-stack development skills
 
 ---
