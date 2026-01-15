@@ -15,4 +15,4 @@ RUN npx prisma generate
 # Expose the backend port
 EXPOSE 8080
 
-CMD ["sh", "-c", "npx prisma migrate dev && npm run start"]
+CMD ["sh", "-c", "npx prisma migrate dev && npm run dev"]
