@@ -5,6 +5,7 @@ import { TaskForm } from "../components/tasks/TaskForm";
 import { Button } from "../components/ui/Button";
 import { useTasks } from "../hooks/useTasks";
 import { useUserTasks } from "../hooks/useUserTasks";
+import { AssignedTaskList } from "../components/tasks/AssignedTaskList";
 
 export default function Tasks() {
   const { tasks, loading: tasksLoading, createTask } = useTasks();

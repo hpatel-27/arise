@@ -10,6 +10,7 @@ import { TaskForm } from "../components/tasks/TaskForm";
 import { XpGainAnimation } from "../components/progression/XpGainAnimation";
 import { LevelUpAnimation } from "../components/stats/LevelUpAnimation";
 import { AchievementNotification } from "../components/achievements/AchievementNotification";
+import { AssignedTaskList } from "../components/tasks/AssignedTaskList";
 
 export default function Home() {
   const { stats, loading: statsLoading, refresh: refreshStats } = useStats();
@@ -49,12 +50,14 @@ export default function Home() {
   const handleCompleteTask = async (taskId) => {
     try {
       const result = await completeTask(taskId);
+      // console.log("Task completion result:", result);
 
       // Show XP gain animation
-      if (result.xpGained) {
+      if (result.xpEarned) {
+        // console.log("Showing XP animation:", result.xpEarned, result.statName);
         setXpAnimation({
           visible: true,
-          amount: result.xpGained,
+          amount: result.xpEarned,
           statName: result.statName || "",
         });
         setTimeout(
@@ -65,6 +68,11 @@ export default function Home() {
 
       // Check for level up
       if (result.levelUp) {
+        // console.log(
+        //   "Showing level up animation:",
+        //   result.statName,
+        //   result.newLevel
+        // );
         setLevelUpAnimation({
           visible: true,
           statName: result.statName || "",
@@ -90,8 +98,14 @@ export default function Home() {
         );
       }
 
-      await refreshStats();
-      await refreshUserTasks();
+      // Delay refresh to allow animations to mount and display
+      // Use requestAnimationFrame to ensure animations have rendered
+      requestAnimationFrame(() => {
+        setTimeout(async () => {
+          await refreshStats();
+          await refreshUserTasks();
+        }, 100);
+      });
     } catch (error) {
       console.error("Failed to complete task:", error);
     }
@@ -144,13 +158,11 @@ export default function Home() {
         </section>
 
         <section>
-          <h2 className="font-pixel text-lg text-white mb-4">
-            Available Tasks
-          </h2>
+          <h2 className="font-pixel text-lg text-white mb-4">My Tasks</h2>
           {userTasksLoading || tasksLoading ? (
             <p className="font-pixel text-sm text-white">Loading tasks...</p>
           ) : (
-            <TaskList
+            <AssignedTaskList
               tasks={tasks}
               userTasks={userTasks}
               onAssign={handleAssignTask}

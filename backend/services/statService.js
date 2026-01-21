@@ -60,6 +60,7 @@ async function updateStats(userId, categoryId, xpEarned) {
     where: { userId, categoryId },
   });
 
+  const oldLevel = stat.statLevel;
   let currentXP = stat.currentXP;
   let currentLevel = stat.statLevel;
 
@@ -73,13 +74,20 @@ async function updateStats(userId, categoryId, xpEarned) {
   // Remainder xp after leveling up
   currentXP = currentXP % XP_PER_LEVEL;
 
-  return await prisma.userStat.update({
+  const updatedStat = await prisma.userStat.update({
     where: { id: stat.id },
     data: {
       currentXP: currentXP,
       statLevel: currentLevel,
     },
   });
+
+  return {
+    ...updatedStat,
+    oldLevel,
+    levelUp: currentLevel > oldLevel,
+    levelsGained,
+  };
 }
 
 module.exports = {
@@ -87,4 +95,5 @@ module.exports = {
   getStats,
   getStatByCategory,
   updateStats,
+  translateCategory,
 };
