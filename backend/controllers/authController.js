@@ -39,7 +39,7 @@ async function googleCallback(req, res) {
   const user = userDTO(userData);
 
   // Redirect frontend with token in query OR send JSON
-  // res.redirect(`http://localhost:5173/home?token=${token}`);
+  // res.redirect(`http://localhost:3000/home?token=${token}`);
   return res.json({ user: userDTO(user), token });
 }
 
