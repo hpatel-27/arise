@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { register } from "../services/authService";
+import { useAuth } from "../hooks/useAuth";
 import { AppShell } from "../components/layout/AppShell";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
@@ -10,11 +11,18 @@ import { defaultNotification } from "../utils/notify";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const { user, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/home");
+    }
+  }, [user, loading, navigate]);
 
   const validateForm = () => {
     const errors = [];
