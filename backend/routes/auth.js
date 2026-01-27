@@ -22,4 +22,5 @@ router.get(
   }),
   authController.googleCallback,
 );
+
 module.exports = router;
