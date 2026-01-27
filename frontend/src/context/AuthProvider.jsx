@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem("auth");
@@ -14,15 +15,20 @@ export const AuthProvider = ({ children }) => {
       setUser(authData.user);
       setToken(authData.token);
     }
+    setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
       const data = await loginService(email, password); // calls backend
       const decoded = jwtDecode(data.token);
+      const authData = {
+        token: data.token,
+        user: decoded.userId,
+      };
       setUser(decoded.userId);
       setToken(data.token);
-      localStorage.setItem("auth", JSON.stringify(data));
+      localStorage.setItem("auth", JSON.stringify(authData));
       return decoded.userId;
     } catch (error) {
       console.error("Login error:", error.message);
@@ -47,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, getToken }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout, getToken }}>
       {children}
     </AuthContext.Provider>
   );
