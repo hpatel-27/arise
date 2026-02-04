@@ -4,6 +4,7 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthCallback from "./pages/AuthCallback";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import Stats from "./pages/Stats";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route
           path="/home"
           element={

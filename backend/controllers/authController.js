@@ -38,9 +38,8 @@ async function googleCallback(req, res) {
   const { user: userData, token } = req.user;
   const user = userDTO(userData);
 
-  // Redirect frontend with token in query OR send JSON
-  // res.redirect(`http://localhost:3000/home?token=${token}`);
-  return res.json({ user: userDTO(user), token });
+  // Redirect frontend with token in query
+  return res.redirect(`http://localhost:3000/auth/callback?token=${token}`);
 }
 
 module.exports = { register, login, googleCallback };
