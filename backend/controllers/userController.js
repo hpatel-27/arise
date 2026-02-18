@@ -33,7 +33,7 @@ async function deleteUser(req, res) {
     const user = await userService.deleteUser(userId);
     res.json(userDTO(user));
   } catch (error) {
-    if (error.message === "User not found") {
+    if (error.message.includes("not found")) {
       res.status(404).json({ error: error.message });
     }
     res.status(500).json({ error: error.message });
