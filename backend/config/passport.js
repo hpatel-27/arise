@@ -2,6 +2,8 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const prisma = require("../db");
 const statService = require("../services/statService");
+const achievementService = require("../services/achievementService");
+const { computeStreak } = require("../services/authService");
 const { generateToken } = require("../utils/jwt");
 
 passport.use(
@@ -31,12 +33,31 @@ passport.use(
           });
 
           // Initialize stats for new user
-          statService.initializeStats(user.id);
+          await statService.initializeStats(user.id);
         }
 
-        // generate token
+        const { newStreak, isSameDay } = computeStreak(user.lastLogin, user.loginStreak);
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLogin: new Date(), loginStreak: newStreak },
+        });
+
+        const streakUnlocks = isSameDay
+          ? []
+          : await achievementService.updateStreakAchievements(user.id, newStreak);
+
+        const loginUnlocks = await achievementService.updateAchievementsForAction(
+          user.id,
+          "login"
+        );
+
         const token = generateToken(user.id);
-        return done(null, { user, token });
+        return done(null, {
+          user,
+          token,
+          unlockedAchievements: [...streakUnlocks, ...loginUnlocks],
+        });
       } catch (error) {
         return done(error, null);
       }
