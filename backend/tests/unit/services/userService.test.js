@@ -21,25 +21,8 @@ describe("Unit Testing UserService", () => {
   describe("getAllUsers", () => {
     test("returns the list of users when they exist", async () => {
       // setup fake data
-      const userId1 = "user-1";
-      const fakeUser1 = {
-        id: userId1,
-        email: "test1@example.com",
-        firstName: "Test1",
-        lastName: "User1",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const userId2 = "user-2";
-      const fakeUser2 = {
-        id: userId2,
-        email: "test2@example.com",
-        firstName: "Test2",
-        lastName: "User2",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      const fakeUser1 = buildUser({ id: "user-1", email: "test1@example.com" });
+      const fakeUser2 = buildUser({ id: "user-2", email: "test2@example.com" });
 
       // Expect a list of two users
       prisma.user.findMany.mockResolvedValue([fakeUser1, fakeUser2]);
@@ -81,28 +64,18 @@ describe("Unit Testing UserService", () => {
   describe("getUserById", () => {
     test("returns a user when the user exists", async () => {
       // setup fake data
-      const userId = "user-123";
-
-      const fakeUser = {
-        id: userId,
-        email: "test@example.com",
-        firstName: "Test",
-        lastName: "User",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
+      const fakeUser = buildUser();
       prisma.user.findUnique.mockResolvedValue(fakeUser);
 
       // make the actual request to the service
-      const result = await userService.getUserById(userId);
+      const result = await userService.getUserById(fakeUser.id);
 
       // assert - returned value
       expect(result).toEqual(fakeUser);
 
       // assert - prisma query contract
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: { id: userId },
+        where: { id: fakeUser.id },
         select: {
           id: true,
           email: true,
