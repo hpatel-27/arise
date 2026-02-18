@@ -1,6 +1,7 @@
 const taskService = require("../services/taskService");
 const pickFields = require("../utils/pickFields");
 const { taskDTO } = require("../dtos/task.dto");
+const { sanitizeTaskInput } = require("../utils/sanitize");
 
 async function getAllTasks(req, res) {
   try {
@@ -27,14 +28,19 @@ async function getTaskById(req, res) {
 }
 
 async function createTask(req, res) {
+  let data;
   try {
-    const data = {
-      categoryId: req.body.categoryId,
+    data = sanitizeTaskInput({
       name: req.body.name,
       requirement: req.body.requirement,
-      xpValue: req.body?.xpValue,
-    };
+      xpValue: req.body.xpValue,
+      categoryId: req.body.categoryId,
+    });
+  } catch (error) {
+    return res.status(400).json({ errors: error.errors });
+  }
 
+  try {
     const task = await taskService.createTask(data);
     res.status(201).json(taskDTO(task));
   } catch (error) {
