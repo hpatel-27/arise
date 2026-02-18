@@ -20,10 +20,11 @@ model User {
   googleId   String?    @unique
   firstName  String?    // null until updated in profile
   lastName   String?    // null until updated in profile
-  isAdmin    Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt 
-  lastLogin  DateTime?
+  isAdmin      Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  lastLogin    DateTime?
+  loginStreak  Int        @default(0)
 
   achievements UserAchievement[]
   userStats    UserStat[]
