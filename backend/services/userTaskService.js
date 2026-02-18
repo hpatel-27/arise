@@ -1,6 +1,7 @@
 const prisma = require("../db");
 const logService = require("./logService");
 const statService = require("./statService");
+const achievementService = require("./achievementService");
 
 // Get all tasks for a user
 async function getAllActiveTasksForUser(userId) {
@@ -91,32 +92,29 @@ async function completeTask(userId, taskId) {
     return { updatedTask, completedTask, taskData };
   });
 
-  // log the task update that reset it
-  await logService.recordUserAction(userId, "task_updated", result.updatedTask);
-
-  // log task completion
-  await logService.recordUserAction(
-    userId,
-    "task_completed",
-    result.completedTask
-  );
-
-  // update the user's stats based on the task they completed
+  // Update the user's stats based on the task they completed
   const updatedStats = await statService.updateStats(
     userId,
     result.taskData.categoryId,
     result.taskData.xpValue
   );
 
-  // log that that the stats have changed
+  // Check for newly unlocked achievements triggered by completing a task
+  const unlockedAchievements = await achievementService.updateAchievementsForAction(
+    userId,
+    "task_completed"
+  );
+
+  // Log significant actions (pure logging, no side effects)
+  await logService.recordUserAction(userId, "task_completed", result.completedTask);
   await logService.recordUserAction(userId, "stat_update", updatedStats);
 
-  // Return completion data with animation information
   return {
     ...result.completedTask,
     statName: statService.translateCategory(result.taskData.categoryId),
     levelUp: updatedStats.levelUp,
     newLevel: updatedStats.statLevel,
+    unlockedAchievements,
   };
 }
 
