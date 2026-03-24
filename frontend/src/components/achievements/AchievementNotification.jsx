@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card } from '../ui/Card';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "../ui/Card";
 
 export function AchievementNotification({ achievement, isVisible, onClose }) {
   return (
@@ -9,12 +10,12 @@ export function AchievementNotification({ achievement, isVisible, onClose }) {
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 300, opacity: 0 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           className="fixed top-4 right-4 z-50 max-w-sm"
         >
           <Card className="border-accent border-4">
             <div className="flex items-center gap-3">
-              <div className="text-4xl">{achievement.icon || '🏆'}</div>
+              <div className="text-4xl">{achievement.icon || "🏆"}</div>
               <div className="flex-1">
                 <h3 className="font-pixel text-sm text-accent mb-1">
                   Achievement Unlocked!
@@ -36,4 +37,3 @@ export function AchievementNotification({ achievement, isVisible, onClose }) {
     </AnimatePresence>
   );
 }
-

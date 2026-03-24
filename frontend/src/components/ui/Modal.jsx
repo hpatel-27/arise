@@ -1,8 +1,9 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card } from './Card';
-import { Button } from './Button';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "./Card";
+import { Button } from "./Button";
 
-export function Modal({ isOpen, onClose, title, children, className = '' }) {
+export function Modal({ isOpen, onClose, title, children, className = "" }) {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +14,7 @@ export function Modal({ isOpen, onClose, title, children, className = '' }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
             onClick={onClose}
           >
@@ -21,7 +22,7 @@ export function Modal({ isOpen, onClose, title, children, className = '' }) {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
               onClick={(e) => e.stopPropagation()}
               className={`max-w-md w-full ${className}`}
             >
@@ -45,4 +46,3 @@ export function Modal({ isOpen, onClose, title, children, className = '' }) {
     </AnimatePresence>
   );
 }
-
