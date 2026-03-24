@@ -1,4 +1,4 @@
-import { ProgressBar } from '../ui/ProgressBar';
+import { ProgressBar } from "../ui/ProgressBar";
 
 export function AchievementProgress({ achievement, currentProgress = 0 }) {
   if (!achievement.targetValue || achievement.targetValue <= 1) {
@@ -16,4 +16,3 @@ export function AchievementProgress({ achievement, currentProgress = 0 }) {
     </div>
   );
 }
-
