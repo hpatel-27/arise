@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./useAuth";
 import { userTaskService } from "../services/userTaskService";
 
+
 export function useUserTasks() {
   const [userTasks, setUserTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { getToken } = useAuth();
+  const { getToken, queueAchievements } = useAuth();
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -49,8 +50,8 @@ export function useUserTasks() {
       const token = getToken();
       if (!token) throw new Error("Not authenticated");
       const result = await userTaskService.complete(taskId, token);
-      // Remove completed task from active list
       setUserTasks(userTasks.filter((ut) => ut.taskId !== taskId));
+      queueAchievements(result.unlockedAchievements);
       return result;
     } catch (err) {
       setError(err.message);

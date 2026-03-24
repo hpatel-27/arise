@@ -1,10 +1,29 @@
 const prisma = require("../db");
 
-async function getAllAchievements() {
+// Returns all achievements merged with the given user's progress.
+// userId is optional — omitting it returns raw achievements (admin use).
+async function getAllAchievements(userId) {
   const achievements = await prisma.achievement.findMany({
     orderBy: { id: "asc" },
   });
-  return achievements;
+
+  if (!userId) return achievements;
+
+  const userAchievements = await prisma.userAchievement.findMany({
+    where: { userId },
+  });
+
+  const progressMap = new Map(userAchievements.map((ua) => [ua.achievementId, ua]));
+
+  return achievements.map((achievement) => {
+    const record = progressMap.get(achievement.id);
+    return {
+      ...achievement,
+      progress: record?.progress ?? 0,
+      unlocked: record?.status ?? false,
+      dateUnlocked: record?.dateUnlocked ?? null,
+    };
+  });
 }
 
 async function createAchievement(data) {
@@ -36,42 +55,100 @@ async function deleteAchievement(id) {
   return achievement;
 }
 
-// internal function for updating user progress, typically on logging a significant action
+// Returns an array of Achievement objects that were unlocked by this action.
 async function updateAchievementsForAction(userId, actionType) {
-  // Get all achievements tied to this type
+  // 1. Fetch all achievements tied to this metric
   const relatedAchievements = await prisma.achievement.findMany({
     where: { metric: actionType },
   });
 
+  if (relatedAchievements.length === 0) return [];
+
+  const achievementIds = relatedAchievements.map((a) => a.id);
+
+  // 2. Batch-fetch existing progress records for this user in one query
+  const existingRecords = await prisma.userAchievement.findMany({
+    where: { userId, achievementId: { in: achievementIds } },
+  });
+
+  const existingMap = new Map(existingRecords.map((r) => [r.achievementId, r]));
+
+  const unlockedAchievements = [];
+
   for (const achievement of relatedAchievements) {
-    const userAchievement = await prisma.userAchievement.upsert({
-      where: {
-        userId_achievementId: { userId, achievementId: achievement.id },
-      },
-      update: {},
-      create: { userId, achievementId: achievement.id },
+    const existing = existingMap.get(achievement.id);
+
+    // Skip already-unlocked achievements
+    if (existing?.status) continue;
+
+    const currentProgress = existing?.progress ?? 0;
+    const newProgress = currentProgress + 1;
+    const shouldUnlock =
+      achievement.targetValue != null && newProgress >= achievement.targetValue;
+
+    const updateData = {
+      progress: shouldUnlock ? achievement.targetValue : newProgress,
+      ...(shouldUnlock ? { status: true, dateUnlocked: new Date() } : {}),
+    };
+
+    // Single upsert per achievement (create or update in one round-trip)
+    await prisma.userAchievement.upsert({
+      where: { userId_achievementId: { userId, achievementId: achievement.id } },
+      update: updateData,
+      create: { userId, achievementId: achievement.id, ...updateData },
     });
 
-    if (!userAchievement.status) {
-      const newProgress = userAchievement.progress + 1;
-
-      if (achievement.targetValue && newProgress >= achievement.targetValue) {
-        await prisma.userAchievement.update({
-          where: { id: userAchievement.id },
-          data: {
-            progress: achievement.targetValue,
-            status: true,
-            dateUnlocked: new Date(),
-          },
-        });
-      } else {
-        await prisma.userAchievement.update({
-          where: { id: userAchievement.id },
-          data: { progress: newProgress },
-        });
-      }
+    if (shouldUnlock) {
+      unlockedAchievements.push(achievement);
     }
   }
+
+  return unlockedAchievements;
+}
+
+// Sets achievement progress to streakLength (rather than incrementing).
+// Used for login streak achievements where progress = current streak count.
+// Returns an array of Achievement objects that were newly unlocked.
+async function updateStreakAchievements(userId, streakLength) {
+  const streakAchievements = await prisma.achievement.findMany({
+    where: { metric: "login_streak" },
+  });
+
+  if (streakAchievements.length === 0) return [];
+
+  const achievementIds = streakAchievements.map((a) => a.id);
+
+  const existingRecords = await prisma.userAchievement.findMany({
+    where: { userId, achievementId: { in: achievementIds } },
+  });
+
+  const existingMap = new Map(existingRecords.map((r) => [r.achievementId, r]));
+
+  const unlockedAchievements = [];
+
+  for (const achievement of streakAchievements) {
+    const existing = existingMap.get(achievement.id);
+    if (existing?.status) continue;
+
+    const shouldUnlock =
+      achievement.targetValue != null && streakLength >= achievement.targetValue;
+    const newProgress = shouldUnlock ? achievement.targetValue : streakLength;
+
+    const updateData = {
+      progress: newProgress,
+      ...(shouldUnlock ? { status: true, dateUnlocked: new Date() } : {}),
+    };
+
+    await prisma.userAchievement.upsert({
+      where: { userId_achievementId: { userId, achievementId: achievement.id } },
+      update: updateData,
+      create: { userId, achievementId: achievement.id, ...updateData },
+    });
+
+    if (shouldUnlock) unlockedAchievements.push(achievement);
+  }
+
+  return unlockedAchievements;
 }
 
 module.exports = {
@@ -81,4 +158,5 @@ module.exports = {
   updateAchievement,
   deleteAchievement,
   updateAchievementsForAction,
+  updateStreakAchievements,
 };

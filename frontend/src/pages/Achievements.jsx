@@ -7,7 +7,7 @@ import { useAchievements } from "../hooks/useAchievements";
 
 export default function Achievements() {
   const { achievements, loading } = useAchievements();
-  const [selectedAchievement, setSelectedAchievement] = useState(null);
+  // const [selectedAchievement, setSelectedAchievement] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;

@@ -24,6 +24,7 @@ export function useStats() {
         // If stats don't exist, try to initialize
         if (err.message.includes("404") || err.message.includes("Failed")) {
           try {
+            const token = getToken();
             await statsService.initialize(token);
             const data = await statsService.getMyStats(token);
             setStats(data);

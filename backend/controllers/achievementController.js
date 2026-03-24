@@ -4,7 +4,8 @@ const { achievementDTO } = require("../dtos/achievement.dto");
 
 async function getAllAchievements(req, res) {
   try {
-    const achievements = await achievementService.getAllAchievements();
+    const userId = req.user?.userId;
+    const achievements = await achievementService.getAllAchievements(userId);
     res.json(achievements.map(achievementDTO));
   } catch (error) {
     res.status(500).json({ error: error.message });

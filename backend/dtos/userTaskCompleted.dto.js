@@ -7,6 +7,7 @@ function userTaskCompletionDTO(userTaskCompletion) {
     statName: userTaskCompletion.statName,
     levelUp: userTaskCompletion.levelUp,
     newLevel: userTaskCompletion.newLevel,
+    unlockedAchievements: userTaskCompletion.unlockedAchievements ?? [],
   };
 }
 

@@ -1,12 +1,17 @@
-import { Modal } from '../ui/Modal';
-import { AchievementCard } from './AchievementCard';
+import { Modal } from "../ui/Modal";
+import { AchievementCard } from "./AchievementCard";
 
 export function AchievementModal({ isOpen, onClose, achievements = [] }) {
-  const unlockedCount = achievements.filter(a => a.unlocked).length;
+  const unlockedCount = achievements.filter((a) => a.unlocked).length;
   const totalCount = achievements.length;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Achievements" className="max-w-4xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Achievements"
+      className="max-w-4xl"
+    >
       <div className="mb-4">
         <p className="font-pixel text-xs text-white">
           Progress: {unlockedCount} / {totalCount} unlocked
@@ -18,7 +23,7 @@ export function AchievementModal({ isOpen, onClose, achievements = [] }) {
             No achievements available
           </p>
         ) : (
-          achievements.map(achievement => (
+          achievements.map((achievement) => (
             <AchievementCard
               key={achievement.id}
               achievement={achievement}
@@ -30,4 +35,3 @@ export function AchievementModal({ isOpen, onClose, achievements = [] }) {
     </Modal>
   );
 }
-

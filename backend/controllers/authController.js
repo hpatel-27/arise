@@ -20,8 +20,8 @@ async function register(req, res) {
 async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const token = await authService.login(email, password);
-    return res.json({ token });
+    const { token, unlockedAchievements } = await authService.login(email, password);
+    return res.json({ token, unlockedAchievements });
   } catch (error) {
     if (error.message.includes("not registered")) {
       return res.status(404).json({ error: error.message });
